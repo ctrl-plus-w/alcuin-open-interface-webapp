@@ -1,6 +1,8 @@
 import type { NextApiRequest } from 'next';
 
-import { MethodsNotAllowedError } from '@/class/ApiError';
+import { verify, decode } from 'jsonwebtoken';
+
+import { MethodsNotAllowedError, UnauthorizedError } from '@/class/ApiError';
 
 import HTTPMethod from '@/constant/HTTPMethod';
 
@@ -19,3 +21,27 @@ export const checkIsPATCH = checkIsHTTPMethod(HTTPMethod.PATCH);
 export const checkIsPOST = checkIsHTTPMethod(HTTPMethod.POST);
 export const checkIsGET = checkIsHTTPMethod(HTTPMethod.GET);
 export const checkIsPUT = checkIsHTTPMethod(HTTPMethod.PUT);
+
+export const getUserIdFromRequest = async (req: NextApiRequest): Promise<string> => {
+  try {
+    const { authorization } = req.headers;
+    if (!authorization) throw new UnauthorizedError();
+
+    const [_, token] = authorization.split(' ');
+
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      console.error("Missing environement variable 'JWT_SECRET'.");
+      throw new UnauthorizedError();
+    }
+
+    verify(token, jwtSecret);
+
+    const jwt = decode(token);
+    if (!jwt || typeof jwt !== 'object' || !('sub' in jwt) || !jwt.sub) throw new UnauthorizedError();
+
+    return jwt.sub;
+  } catch (err) {
+    throw new UnauthorizedError();
+  }
+};

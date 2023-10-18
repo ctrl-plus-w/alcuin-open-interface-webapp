@@ -43,11 +43,12 @@ const AuthContextProvider = ({ children }: IProps) => {
   const [error, setError] = useState<any>(null);
 
   const [isSessionLoading, setIsSessionLoading] = useState(true);
-  const [isUserLoading, setIsUserLoading] = useState(true);
+  const [isUserLoading, setIsUserLoading] = useState(false);
 
   const fetchSession = async () => {
     try {
       const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData) throw new Error('Session data not found');
       if (!shallowCompareSessions(sessionData.session, session)) setSession(sessionData.session);
     } catch (err) {
       setError(err);

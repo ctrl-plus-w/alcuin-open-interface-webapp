@@ -36,4 +36,10 @@ export class MethodsNotAllowedError extends ApiError {
   }
 }
 
+export class UnauthorizedError extends ApiError {
+  constructor() {
+    super('Unauthorized', 401);
+  }
+}
+
 export default ApiError;

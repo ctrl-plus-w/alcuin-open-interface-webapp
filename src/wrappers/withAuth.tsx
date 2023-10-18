@@ -22,6 +22,13 @@ const withAuth = <IProps extends IPageProps>(Component: React.ComponentType<IPro
       if (!session) router.push('/');
     }, [session, isLoading]);
 
+    useEffect(() => {
+      if (!user) return;
+
+      if (router.asPath.startsWith('/dashboard') && user.role === 'ADMIN') router.replace('/admin-dashboard');
+      if (router.asPath.startsWith('/admin-dashboard') && user.role !== 'ADMIN') router.replace('/dashboard');
+    }, [user]);
+
     if (isLoading || !session || !user) return <SplashLayout />;
 
     return <Component {...props} user={user} />;

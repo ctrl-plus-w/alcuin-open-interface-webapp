@@ -12,11 +12,31 @@ declare global {
 
       role: Role;
 
+      groups: string[];
+
       created_at: number;
     }
 
-    export type ICreateProfile = Omit<IProfile, 'id', 'created_at'>;
+    export type ICreateProfile = Omit<IProfile, 'id' | 'created_at'>;
     export type IUpdateProfile = Partial<ICreateProfile>;
+
+    export interface ICourse {
+      id: string;
+
+      title: string;
+      description: string;
+      start_datetime: string;
+      end_datetime: string;
+
+      group: string;
+      professors: string[];
+      location: string;
+
+      created_at: number;
+    }
+
+    export type ICreateCourse = Omit<ICourse, 'id' | 'created_at'>;
+    export type IUpdateCourse = Partial<ICreateCourse>;
   }
 }
 
