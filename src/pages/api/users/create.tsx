@@ -34,7 +34,7 @@ const handler: NextApiHandler = async (req, res) => {
   if (!user) throw new RessourceNotFoundError('User');
   if (user.role !== 'ADMIN') throw new UnauthorizedError();
 
-  const { data, error } = await supabase.auth.admin.createUser({ email, password });
+  const { data, error } = await supabase.auth.admin.createUser({ email, password, email_confirm: true });
   if (error) throw error;
 
   return res.status(200).json(data.user);
