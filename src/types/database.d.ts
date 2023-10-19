@@ -32,6 +32,8 @@ declare global {
       professors: string[];
       location: string;
 
+      disabled: boolean;
+
       created_at: number;
     }
 

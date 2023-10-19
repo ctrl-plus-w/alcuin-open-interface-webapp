@@ -1,4 +1,4 @@
-import { twoDigit } from './number.util';
+import { twoDigit } from '@/util/number.util';
 
 export const getFirstDayOfWeek = (date: Date, firstDayOfWeek: number = 1): Date => {
   const dayOfWeek = date.getDay();
@@ -20,6 +20,12 @@ export const getLastDayOfWorkingWeek = (date: Date): Date => {
   return getLastDayOfWeek(date, -2);
 };
 
+/**
+ * Whether the dates have the same day, month and year
+ * @param date1 The first date
+ * @param date2 The second date
+ * @returns A boolean
+ */
 export const isSameDate = (date1: Date, date2: Date): boolean => {
   return (
     date1.getDate() === date2.getDate() &&
@@ -28,6 +34,21 @@ export const isSameDate = (date1: Date, date2: Date): boolean => {
   );
 };
 
+/**
+ * Return a time with the format hh:mm
+ * @param date The date to get the time from
+ * @returns A string
+ */
 export const getSimpleTime = (date: Date): string => {
   return [date.getHours(), date.getMinutes()].map(twoDigit).join(':');
+};
+
+export const addDays = (date: Date, amount: number): Date => {
+  const _date = new Date(date);
+  _date.setDate(date.getDate() + amount);
+  return _date;
+};
+
+export const subDays = (date: Date, amount: number): Date => {
+  return addDays(date, -amount);
 };

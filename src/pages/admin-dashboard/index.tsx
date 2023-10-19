@@ -1,4 +1,6 @@
-import AdminDashboardLayout from '@/components/layouts/AdminDashboardLayout';
+import Head from 'next/head';
+
+import AdminDashboardLayout from '@/layout/AdminDashboardLayout';
 
 import { TypographyH1, TypographyInlineCode } from '@/ui/typography';
 
@@ -11,6 +13,10 @@ interface IProps {
 const AdminDashboardHomePage = ({ user }: IProps) => {
   return (
     <AdminDashboardLayout className="flex flex-col justify-center items-center gap-4">
+      <Head>
+        <title>Dashboard</title>
+      </Head>
+
       <TypographyH1>Hello world !</TypographyH1>
 
       <TypographyInlineCode>{JSON.stringify({ email: user.email })}</TypographyInlineCode>

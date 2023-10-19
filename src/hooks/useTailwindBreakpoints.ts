@@ -5,7 +5,7 @@ import throttle from 'lodash.throttle';
 import { keys } from '@/util/object.util';
 
 const findKeyByValue = <K, T extends Record<string, K>>(object: T, value: K) =>
-  Object.keys(object).find((key) => object[key] === value);
+  keys(object).find((key) => object[key] === value) as keyof T;
 
 const getDeviceConfig = (width: number) => {
   const screens = {
