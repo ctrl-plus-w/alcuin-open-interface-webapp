@@ -32,7 +32,7 @@ const DashboardHomePage = ({ user }: IProps) => {
   const coursesRepository = useCoursesRepository();
   const breakpoint = useTailwindBreakpoint();
 
-  const [group, setGroup] = useState<string | undefined>(undefined);
+  const [group, setGroup] = useState<string | undefined>(user.groups[0]);
   const [courses, setCourses] = useState<Database.ICourse[]>([]);
 
   const [relativeDate, setRelativeDate] = useState(new Date());
