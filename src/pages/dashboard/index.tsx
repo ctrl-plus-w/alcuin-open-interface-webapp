@@ -93,7 +93,7 @@ const DashboardHomePage = ({ user }: IProps) => {
         <title>Dashboard</title>
       </Head>
 
-      <div className="w-full flex justify-between gap-4">
+      <div className="w-full flex flex-col md:flex-row justify-between gap-4">
         <Select value={group} onValueChange={(_group) => setGroup(_group)}>
           <SelectTrigger className="w-full md:w-auto">
             <SelectValue placeholder="Selectionner un groupe" />
@@ -111,7 +111,7 @@ const DashboardHomePage = ({ user }: IProps) => {
         </Select>
 
         <Popover>
-          <PopoverTrigger>
+          <PopoverTrigger asChild>
             <Button variant="outline" className="flex-shrink-0 flex-1 whitespace-nowrap">
               <CalendarIcon className="mr-2 h-4 w-4" />
               {format(relativeDate, 'EEE dd LLLL', { locale: fr })}

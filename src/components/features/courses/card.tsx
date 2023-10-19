@@ -61,8 +61,8 @@ const Card = ({ course, onEditCb }: IProps) => {
         </div>
       </SheetTrigger>
 
-      <SheetContent className="flex flex-col gap-4">
-        <SheetHeader>
+      <SheetContent className="flex flex-col  gap-4">
+        <SheetHeader className="text-left">
           <SheetTitle>Modification des notes</SheetTitle>
           <SheetDescription>
             Lorsque vous ajoutez des notes sur un cours, ces notes seront vues par tous le monde, veillez à revérifier
@@ -86,7 +86,7 @@ const Card = ({ course, onEditCb }: IProps) => {
         <Textarea id="notes" value={notes} onChange={onChange(setNotes)} />
 
         <SheetFooter>
-          <SheetClose>
+          <SheetClose asChild>
             <Button onClick={onSubmit}>Modifier la note</Button>
           </SheetClose>
         </SheetFooter>
