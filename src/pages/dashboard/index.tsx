@@ -4,7 +4,7 @@ import Head from 'next/head';
 
 import { addDays, format, subDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 
 import Card from '@/feature/courses/card';
 
@@ -68,6 +68,22 @@ const DashboardHomePage = ({ user }: IProps) => {
     );
   };
 
+  const onCalendarNext = () => {
+    if (['sm', 'md', 'lg', 'xl'].includes(breakpoint)) {
+      setRelativeDate((d) => addDays(d, 1));
+    } else {
+      setRelativeDate((d) => addDays(d, 7));
+    }
+  };
+
+  const onCalendarPrevious = () => {
+    if (['sm', 'md', 'lg', 'xl'].includes(breakpoint)) {
+      setRelativeDate((d) => subDays(d, 1));
+    } else {
+      setRelativeDate((d) => subDays(d, 7));
+    }
+  };
+
   const [startDate, endDate] = useMemo(() => {
     if (['sm', 'md', 'lg'].includes(breakpoint)) {
       return [relativeDate, relativeDate];
@@ -110,17 +126,32 @@ const DashboardHomePage = ({ user }: IProps) => {
           </SelectContent>
         </Select>
 
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="flex-shrink-0 flex-1 whitespace-nowrap">
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {format(relativeDate, 'EEE dd LLLL', { locale: fr })}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="p-0">
-            <Calendar mode="single" selected={relativeDate} onSelect={(_d) => _d && setRelativeDate(_d)} locale={fr} />
-          </PopoverContent>
-        </Popover>
+        <div className="flex gap-2 flex-shrink-0 flex-1 md:flex-grow-0">
+          <Button onClick={onCalendarPrevious} variant="outline">
+            <ChevronLeftIcon className="h-4 w-4" />
+          </Button>
+
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" className="flex-1 whitespace-nowrap">
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {format(relativeDate, 'EEE dd LLLL', { locale: fr })}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="p-0">
+              <Calendar
+                mode="single"
+                selected={relativeDate}
+                onSelect={(_d) => _d && setRelativeDate(_d)}
+                locale={fr}
+              />
+            </PopoverContent>
+          </Popover>
+
+          <Button onClick={onCalendarNext} variant="outline">
+            <ChevronRightIcon className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
 
       <div className="flex divide-x divide-zinc-300 w-full h-full">
