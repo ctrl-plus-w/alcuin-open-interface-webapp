@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 
 import Head from 'next/head';
 
-import { addDays, format, subDays } from 'date-fns';
+import { Combobox } from '@/components/ui/combobox';
+import { addDays, format, isBefore, subDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 
@@ -21,7 +22,7 @@ import withAuth from '@/wrapper/withAuth';
 import useCoursesRepository from '@/hook/useCoursesRepository';
 import useTailwindBreakpoint from '@/hook/useTailwindBreakpoints';
 
-import { getDatesInRange } from '@/util/array.util';
+import { getDatesInRange, unique } from '@/util/array.util';
 import { getFirstDayOfWeek, getLastDayOfWorkingWeek, isSameDate } from '@/util/date.util';
 
 interface IProps {
@@ -32,12 +33,12 @@ const DashboardHomePage = ({ user }: IProps) => {
   const coursesRepository = useCoursesRepository();
   const breakpoint = useTailwindBreakpoint();
 
+  const [highlightedCourses, setHighlightedCourses] = useState<Database.ICourse[]>([]);
+
   const [group, setGroup] = useState<string | undefined>(user.groups[0]);
   const [courses, setCourses] = useState<Database.ICourse[]>([]);
 
   const [relativeDate, setRelativeDate] = useState(new Date());
-  // const [startDate, setStartDate] = useState(getFirstDayOfWeek(new Date()));
-  // const [endDate, setEndDate] = useState(getLastDayOfWeek(new Date()));
 
   /**
    * Fetch the courses of the selected group (not disabled)
@@ -84,6 +85,16 @@ const DashboardHomePage = ({ user }: IProps) => {
     }
   };
 
+  const highlightNextCourse = (item: { label: string; value: string }) => {
+    const [candidate] = courses
+      .filter(({ title, start_datetime }) => title === item.label && new Date(start_datetime).getTime() >= Date.now())
+      .sort((a, b) => (isBefore(new Date(a.start_datetime), new Date(b.start_datetime)) ? -1 : 1));
+
+    if (!candidate) return;
+    setRelativeDate(new Date(candidate.start_datetime));
+    setHighlightedCourses([candidate]);
+  };
+
   const [startDate, endDate] = useMemo(() => {
     if (['sm', 'md', 'lg'].includes(breakpoint)) {
       return [relativeDate, relativeDate];
@@ -126,11 +137,21 @@ const DashboardHomePage = ({ user }: IProps) => {
           </SelectContent>
         </Select>
 
+        <Combobox
+          data={unique(
+            courses
+              .filter(({ start_datetime }) => new Date(start_datetime).getTime() >= Date.now())
+              .map(({ title }) => title),
+          )}
+          item={null}
+          setItem={(i) => i && 'value' in i && highlightNextCourse(i)}
+          selectPlaceholder="Aller au prochain cours"
+        />
+
         <div className="flex gap-2 flex-shrink-0 flex-1 md:flex-grow-0">
           <Button onClick={onCalendarPrevious} variant="outline">
             <ChevronLeftIcon className="h-4 w-4" />
           </Button>
-
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" className="flex-1 whitespace-nowrap">
@@ -147,7 +168,6 @@ const DashboardHomePage = ({ user }: IProps) => {
               />
             </PopoverContent>
           </Popover>
-
           <Button onClick={onCalendarNext} variant="outline">
             <ChevronRightIcon className="h-4 w-4" />
           </Button>
@@ -167,7 +187,12 @@ const DashboardHomePage = ({ user }: IProps) => {
               (courseGroup) => (
                 <div key={courseGroup[0].start_datetime} className="flex w-full gap-2">
                   {courseGroup.map((course) => (
-                    <Card key={course.id} course={course} onEditCb={fetchCourses} />
+                    <Card
+                      key={course.id}
+                      course={course}
+                      onEditCb={fetchCourses}
+                      highlighted={!!highlightedCourses.find(({ id }) => course.id === id)}
+                    />
                   ))}
                 </div>
               ),

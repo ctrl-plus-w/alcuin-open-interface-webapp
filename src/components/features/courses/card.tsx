@@ -20,13 +20,16 @@ import useCoursesRepository from '@/hook/useCoursesRepository';
 import { getSimpleTime } from '@/util/date.util';
 import { onChange } from '@/util/react.util';
 
+import { cn } from '@/lib/utils';
+
 interface IProps {
   course: Database.ICourse;
 
+  highlighted?: boolean;
   onEditCb?: VoidFunction;
 }
 
-const Card = ({ course, onEditCb }: IProps) => {
+const Card = ({ course, onEditCb, highlighted }: IProps) => {
   const coursesRepository = useCoursesRepository();
 
   const { toastError } = useToast();
@@ -47,7 +50,12 @@ const Card = ({ course, onEditCb }: IProps) => {
 
   return (
     <Sheet>
-      <SheetTrigger className="w-full bg-purple-200 rounded-md text-sm overflow-hidden">
+      <SheetTrigger
+        className={cn(
+          'w-full bg-purple-200 rounded-md text-sm overflow-hidden',
+          highlighted && 'outline-dashed outline-offset-2 outline-purple-800',
+        )}
+      >
         <div className="flex flex-col items-start m-2">
           <p className="truncate w-full text-left text-purple-700 font-semibold">
             {course.description !== '' ? '⚠️ ' : ''}

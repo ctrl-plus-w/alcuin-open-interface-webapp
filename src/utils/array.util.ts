@@ -8,6 +8,10 @@ export const arrayToString = (arr: string[]): string => {
   return `${arr.slice(0, arr.length - 1).join(', ')} and ${arr[arr.length - 1]}`;
 };
 
+export const unique = <T>(arr: T[]): T[] => {
+  return Array.from(new Set(arr));
+};
+
 export const generateArray = <T>(length: number, element: T): T[] => {
   return new Array(length).fill(element);
 };
