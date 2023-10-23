@@ -1,73 +1,112 @@
-import { useState, useMemo } from 'react';
+import * as React from 'react';
 
-import { useRouter } from 'next/router';
+import Head from 'next/head';
+import Link from 'next/link';
 
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import Joi from 'joi';
+import { ArrowRight } from 'lucide-react';
 
 import { Button } from '@/ui/button';
-import { Input } from '@/ui/input';
-import { TypographyH1 } from '@/ui/typography';
 import { useToast } from '@/ui/use-toast';
 
-type FormSchemaType = {
-  email: string;
-  password: string;
+import Combobox from '@/element/ComboBox';
+
+import CALENDARS, { BASEPATH } from '@/constant/Calendars';
+
+const prettifyCalendarName = (name: string) => {
+  if (!name.startsWith('23_24')) return name.replaceAll('_', ' ');
+  return name.replaceAll('_', ' ');
 };
 
-const formSchema = Joi.object<FormSchemaType>({
-  email: Joi.string().not().empty().required(),
-  password: Joi.string().not().empty().required(),
-});
+export default function Home() {
+  const { toast } = useToast();
 
-const AuthenticationPage = (): React.ReactElement => {
-  const supabase = useSupabaseClient();
-  const router = useRouter();
+  const [currentCategory, setCurrentCategory] = React.useState('');
+  const [currentValue, setCurrentValue] = React.useState('');
 
-  const { toastError } = useToast();
+  React.useEffect(() => {
+    setCurrentValue('');
+  }, [currentCategory]);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const dropdownCategoriesValues = React.useMemo(() => {
+    return Object.keys(CALENDARS).map((value) => ({ value: value.toLocaleLowerCase(), label: value }));
+  }, []);
 
-  const onChange =
-    (setter: React.Dispatch<React.SetStateAction<string>>) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setter(event.target.value);
-    };
+  const dropdownValues = React.useMemo(() => {
+    const category = dropdownCategoriesValues.find(({ value }) => value === currentCategory);
+    if (!category) return [];
 
-  const isValid = useMemo(() => {
-    const { error } = formSchema.validate({ email, password });
+    const calendars = CALENDARS[category.label as keyof typeof CALENDARS];
 
-    if (error) return false;
-    return true;
-  }, [email, password]);
+    return calendars.map((calendar) => ({
+      value: prettifyCalendarName(calendar).toLocaleLowerCase(),
+      label: prettifyCalendarName(calendar),
+      calendar: calendar,
+    }));
+  }, [currentCategory, dropdownCategoriesValues]);
 
-  const onSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const onClick = () => {
+    const calendar = dropdownValues.find(({ value }) => value === currentValue);
+    if (!calendar) return;
+
+    const url = `${window.location.origin}/${BASEPATH}/${calendar.calendar}`;
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) throw error;
+      navigator.clipboard.writeText(url);
 
-      router.replace('/dashboard');
+      toast({
+        title: 'Copié !',
+        description: 'Le lien a été copié, vous pouvez le coller dans votre application de calendrier préféré.',
+      });
     } catch (err) {
-      toastError(err);
+      console.error(err);
     }
   };
 
   return (
-    <div className="grid place-items-center w-screen h-screen font-mono">
-      <form onSubmit={onSubmit} className="flex flex-col gap-2 w-full max-w-sm px-4">
-        <TypographyH1 className="mb-3">Connection</TypographyH1>
+    <main className="h-[100svh] flex justify-center pt-32">
+      <Head>
+        <title>Alcuin Scrapper</title>
+      </Head>
 
-        <Input type="email" placeholder="jdoe.ing2026@esaip.org" value={email} onChange={onChange(setEmail)} />
-        <Input type="password" placeholder="*******" value={password} onChange={onChange(setPassword)} />
+      <div className="flex flex-col gap-4">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Calendrier Alcuin</h1>
+        <p className="mb-6">
+          Par <strong>Alex Fougeroux</strong> et <strong>Lukas Laudrain</strong>.
+        </p>
 
-        <Button type="submit" className="mt-3" disabled={!isValid}>
-          Se connecter
+        <Combobox
+          values={dropdownCategoriesValues}
+          placeholder="Sélectionner la catégorie"
+          {...{ currentValue: currentCategory, setCurrentValue: setCurrentCategory }}
+        />
+        {currentCategory !== '' && (
+          <Combobox
+            values={dropdownValues}
+            placeholder="Sélectionner la filière."
+            {...{ currentValue, setCurrentValue }}
+          />
+        )}
+
+        <Button className="w-full" disabled={currentValue === ''} onClick={onClick}>
+          Copier 🎉
         </Button>
-      </form>
-    </div>
-  );
-};
 
-export default AuthenticationPage;
+        <div className="flex items-center gap-2 text-zinc-300 my-2">
+          <div className="w-full h-[2px] bg-zinc-300"></div>
+          <p>OU</p>
+          <div className="w-full h-[2px] bg-zinc-300"></div>
+        </div>
+
+        <Link href="/guide" className="w-full">
+          <Button className="flex items-center gap-2 w-full" variant="outline">
+            Guides d&apos;installation <ArrowRight strokeWidth={1.5} />
+          </Button>
+        </Link>
+
+        <Link href="/auth" className="w-full">
+          <Button className="w-full">Se connecter</Button>
+        </Link>
+      </div>
+    </main>
+  );
+}
