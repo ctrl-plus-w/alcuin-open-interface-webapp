@@ -45,6 +45,7 @@
     "ical-generator": "^5.0.1",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
+    "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
     "lucide-react": "^0.287.0",
     "next": "13.5.4",
@@ -61,6 +62,7 @@
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.2.0",
+    "@types/lodash.debounce": "^4.0.8",
     "@typescript-eslint/eslint-plugin": "^6.3.0",
     "prettier": "^3.0.1"
   }

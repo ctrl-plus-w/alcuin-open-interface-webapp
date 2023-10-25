@@ -27,9 +27,11 @@ interface IProps {
 
   highlighted?: boolean;
   onEditCb?: VoidFunction;
+
+  className?: string;
 }
 
-const Card = ({ course, onEditCb, highlighted }: IProps) => {
+const Card = ({ course, onEditCb, highlighted, className }: IProps) => {
   const coursesRepository = useCoursesRepository();
 
   const { toastError } = useToast();
@@ -54,6 +56,7 @@ const Card = ({ course, onEditCb, highlighted }: IProps) => {
         className={cn(
           'w-full bg-purple-200 rounded-md text-sm overflow-hidden',
           highlighted && 'outline-dashed outline-offset-2 outline-purple-800',
+          className,
         )}
       >
         <div className="flex flex-col items-start m-2">
@@ -62,7 +65,7 @@ const Card = ({ course, onEditCb, highlighted }: IProps) => {
             {course.title}
           </p>
 
-          <p className="text-purple-700 text-xs">{course.location}</p>
+          <p className="text-purple-700 text-xs">{course.location ?? 'Pas de location'}</p>
           <p className="text-purple-700 text-xs">
             {[course.start_datetime, course.end_datetime].map((d) => getSimpleTime(new Date(d))).join(' - ')}
           </p>
@@ -85,7 +88,7 @@ const Card = ({ course, onEditCb, highlighted }: IProps) => {
           </p>
 
           <div className="flex w-full justify-between text-purple-700 text-sm">
-            <p>{course.location}</p>
+            <p>{course.location ?? 'Pas de location'}</p>
             <p>{[course.start_datetime, course.end_datetime].map((d) => getSimpleTime(new Date(d))).join(' - ')}</p>
           </div>
         </div>

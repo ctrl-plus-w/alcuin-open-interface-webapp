@@ -2,12 +2,11 @@ import { useEffect, useMemo, useState } from 'react';
 
 import Head from 'next/head';
 
+import CardGroup from '@/components/features/courses/card-group';
 import { Combobox } from '@/components/ui/combobox';
 import { addDays, format, isBefore, subDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
-
-import Card from '@/feature/courses/card';
 
 import DashboardLayout from '@/layout/DashboardLayout';
 
@@ -185,16 +184,12 @@ const DashboardHomePage = ({ user }: IProps) => {
 
             {groupCoursesByTime(courses.filter((course) => isSameDate(new Date(course.start_datetime), date))).map(
               (courseGroup) => (
-                <div key={courseGroup[0].start_datetime} className="flex w-full gap-2">
-                  {courseGroup.map((course) => (
-                    <Card
-                      key={course.id}
-                      course={course}
-                      onEditCb={fetchCourses}
-                      highlighted={!!highlightedCourses.find(({ id }) => course.id === id)}
-                    />
-                  ))}
-                </div>
+                <CardGroup
+                  courses={courseGroup}
+                  onEditCb={fetchCourses}
+                  highlightedCourses={highlightedCourses}
+                  key={courseGroup[0].start_datetime}
+                />
               ),
             )}
           </div>
