@@ -1,28 +1,28 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Head from 'next/head';
 
-import CardGroup from '@/components/features/courses/card-group';
-import { Combobox } from '@/components/ui/combobox';
-import { addDays, format, isBefore, subDays } from 'date-fns';
+import { addDays, format, isAfter, isBefore, subDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { AnimatePresence, motion } from 'framer-motion';
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 
 import DashboardLayout from '@/layout/DashboardLayout';
 
 import { Button } from '@/ui/button';
 import { Calendar } from '@/ui/calendar';
+import { Combobox } from '@/ui/combobox';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/ui/select';
-import { TypographyH4 } from '@/ui/typography';
+
+import WeekCalendar from '@/module/WeekCalendar';
 
 import withAuth from '@/wrapper/withAuth';
 
 import useCoursesRepository from '@/hook/useCoursesRepository';
 import useTailwindBreakpoint from '@/hook/useTailwindBreakpoints';
 
-import { getDatesInRange, unique } from '@/util/array.util';
-import { getFirstDayOfWeek, getLastDayOfWorkingWeek, isSameDate } from '@/util/date.util';
+import { unique } from '@/util/array.util';
 
 interface IProps {
   user: Database.IProfile;
@@ -37,7 +37,7 @@ const DashboardHomePage = ({ user }: IProps) => {
   const [group, setGroup] = useState<string | undefined>(user.groups[0]);
   const [courses, setCourses] = useState<Database.ICourse[]>([]);
 
-  const [relativeDate, setRelativeDate] = useState(new Date());
+  const [[direction, relativeDate], setRelativeDateAndDirection] = useState<[1 | -1, Date]>([1, new Date()]);
 
   /**
    * Fetch the courses of the selected group (not disabled)
@@ -47,40 +47,19 @@ const DashboardHomePage = ({ user }: IProps) => {
     setCourses(_courses);
   };
 
-  /**
-   * Group courses by their start_time
-   * @param courses The courses to group
-   * @returns An array of arrays of courses
-   */
-  const groupCoursesByTime = (courses: Database.ICourse[]) => {
-    const sortedAndGroupedCourses: Record<string, Database.ICourse[]> = {};
-
-    for (const course of courses) {
-      if (course.start_datetime in sortedAndGroupedCourses) {
-        sortedAndGroupedCourses[course.start_datetime].push(course);
-      } else {
-        sortedAndGroupedCourses[course.start_datetime] = [course];
-      }
-    }
-
-    return Object.values(sortedAndGroupedCourses).sort((a, b) =>
-      new Date(a[0].start_datetime).getTime() > new Date(b[0].end_datetime).getTime() ? 1 : -1,
-    );
-  };
-
   const onCalendarNext = () => {
     if (['sm', 'md', 'lg', 'xl'].includes(breakpoint)) {
-      setRelativeDate((d) => addDays(d, 1));
+      setRelativeDateAndDirection(([_, d]) => [1, addDays(d, 1)]);
     } else {
-      setRelativeDate((d) => addDays(d, 7));
+      setRelativeDateAndDirection(([_, d]) => [1, addDays(d, 7)]);
     }
   };
 
   const onCalendarPrevious = () => {
     if (['sm', 'md', 'lg', 'xl'].includes(breakpoint)) {
-      setRelativeDate((d) => subDays(d, 1));
+      setRelativeDateAndDirection(([_, d]) => [-1, subDays(d, 1)]);
     } else {
-      setRelativeDate((d) => subDays(d, 7));
+      setRelativeDateAndDirection(([_, d]) => [-1, subDays(d, 7)]);
     }
   };
 
@@ -90,19 +69,9 @@ const DashboardHomePage = ({ user }: IProps) => {
       .sort((a, b) => (isBefore(new Date(a.start_datetime), new Date(b.start_datetime)) ? -1 : 1));
 
     if (!candidate) return;
-    setRelativeDate(new Date(candidate.start_datetime));
+    setRelativeDateAndDirection(() => [1, new Date(candidate.start_datetime)]);
     setHighlightedCourses([candidate]);
   };
-
-  const [startDate, endDate] = useMemo(() => {
-    if (['sm', 'md', 'lg'].includes(breakpoint)) {
-      return [relativeDate, relativeDate];
-    } else if (['xl'].includes(breakpoint)) {
-      return [subDays(relativeDate, 1), addDays(relativeDate, 1)];
-    } else {
-      return [getFirstDayOfWeek(relativeDate), getLastDayOfWorkingWeek(relativeDate)];
-    }
-  }, [relativeDate, breakpoint]);
 
   /**
    * Fetch the courses when the group change
@@ -162,7 +131,7 @@ const DashboardHomePage = ({ user }: IProps) => {
               <Calendar
                 mode="single"
                 selected={relativeDate}
-                onSelect={(_d) => _d && setRelativeDate(_d)}
+                onSelect={(_d) => _d && setRelativeDateAndDirection(([_, d]) => [isAfter(_d, d) ? 1 : -1, _d])}
                 locale={fr}
               />
             </PopoverContent>
@@ -173,27 +142,33 @@ const DashboardHomePage = ({ user }: IProps) => {
         </div>
       </div>
 
-      <div className="flex divide-x divide-zinc-300 w-full h-full">
-        {getDatesInRange(startDate, endDate).map((date, i, arr) => (
-          <div
-            key={i}
-            className="flex flex-col gap-2 items-center flex-grow-0 w-full h-full p-4 first:pl-0 last:pr-0"
-            style={{ width: `${(1 / arr.length) * 100}%` }}
+      <div className="relative w-full h-full overflow-hidden">
+        <AnimatePresence>
+          <motion.div
+            key={relativeDate.toISOString()}
+            variants={{
+              enter: (d: number) => ({ x: d > 0 ? 1000 : -1000, opacity: 0 }),
+              center: { zIndex: 1, x: 0, opacity: 1 },
+              exit: (d: number) => ({ x: d < 0 ? 1000 : -1000, opacity: 0, zIndex: 0 }),
+            }}
+            transition={{
+              x: { type: 'spring', stiffness: 300, damping: 30 },
+              opacity: { duration: 0.2 },
+            }}
+            custom={direction}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            className="absolute inset-0 w-full h-full"
           >
-            <TypographyH4 className="mb-2">{format(date, 'EEE dd LLLL', { locale: fr })}</TypographyH4>
-
-            {groupCoursesByTime(courses.filter((course) => isSameDate(new Date(course.start_datetime), date))).map(
-              (courseGroup) => (
-                <CardGroup
-                  courses={courseGroup}
-                  onEditCb={fetchCourses}
-                  highlightedCourses={highlightedCourses}
-                  key={courseGroup[0].start_datetime}
-                />
-              ),
-            )}
-          </div>
-        ))}
+            <WeekCalendar
+              courses={courses}
+              highlightedCourses={highlightedCourses}
+              onEditCb={fetchCourses}
+              date={relativeDate}
+            />
+          </motion.div>
+        </AnimatePresence>
       </div>
     </DashboardLayout>
   );
