@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { addHours } from 'date-fns';
+
 import { Button } from '@/ui/button';
 import { Label } from '@/ui/label';
 import {
@@ -67,7 +69,9 @@ const Card = ({ course, onEditCb, highlighted, className }: IProps) => {
 
           <p className="text-purple-700 text-xs">{course.location ?? 'Pas de location'}</p>
           <p className="text-purple-700 text-xs">
-            {[course.start_datetime, course.end_datetime].map((d) => getSimpleTime(new Date(d))).join(' - ')}
+            {[course.start_datetime, course.end_datetime]
+              .map((d) => getSimpleTime(addHours(new Date(d), 1)))
+              .join(' - ')}
           </p>
         </div>
       </SheetTrigger>
@@ -89,7 +93,11 @@ const Card = ({ course, onEditCb, highlighted, className }: IProps) => {
 
           <div className="flex w-full justify-between text-purple-700 text-sm">
             <p>{course.location ?? 'Pas de location'}</p>
-            <p>{[course.start_datetime, course.end_datetime].map((d) => getSimpleTime(new Date(d))).join(' - ')}</p>
+            <p>
+              {[course.start_datetime, course.end_datetime]
+                .map((d) => getSimpleTime(addHours(new Date(d), 1)))
+                .join(' - ')}
+            </p>
           </div>
         </div>
 
