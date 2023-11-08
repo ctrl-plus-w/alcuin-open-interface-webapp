@@ -3,6 +3,7 @@ import * as React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
+import { TypographyH1, TypographyH2, TypographyInlineCode, TypographyP } from '@/components/ui/typography';
 import { ArrowRight } from 'lucide-react';
 
 import { Button } from '@/ui/button';
@@ -63,50 +64,71 @@ export default function Home() {
   };
 
   return (
-    <main className="h-[100svh] flex justify-center pt-32">
+    <>
       <Head>
         <title>Alcuin Scrapper</title>
       </Head>
 
-      <div className="flex flex-col gap-4">
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Calendrier Alcuin</h1>
-        <p className="mb-6">
-          Par <strong>Alex Fougeroux</strong> et <strong>Lukas Laudrain</strong>.
-        </p>
+      <main className="container flex flex-col py-12">
+        <TypographyH1>Calendrier Alcuin</TypographyH1>
 
-        <Combobox
-          values={dropdownCategoriesValues}
-          placeholder="Sélectionner la catégorie"
-          {...{ currentValue: currentCategory, setCurrentValue: setCurrentCategory }}
-        />
-        {currentCategory !== '' && (
+        <TypographyP className="mb-2">
+          Alcuin Scraper est un outils permettant de bénéficier des informations relatives au calendrier que vous pouvez
+          retrouver sur Alcuin et sur MyESAIP sur le calendrier natif de votre téléphone. Nous avons également ajouté
+          une fonctionnalité permettant de mettre des informations relatives aux devoirs et examens pour les cours, le
+          tout synchronisé. Un guide d&apos;installation est disponible sur{' '}
+          <Link href="/guide" className="font-medium underline underline-offset-4">
+            cette page
+          </Link>
+          .
+        </TypographyP>
+
+        <TypographyH2>Attention !</TypographyH2>
+        <TypographyP className="mb-6 ">
+          Cette application est encore en version Beta, quelques bugs peuvent survenir, si vous rencontrez un problème,
+          vous pouvez envoyer un mail à <TypographyInlineCode>lukas.ldrn@gmail.com</TypographyInlineCode>. D&apos;une
+          autre part, faites attention à la synchronisation, entre ce que vous pouvez voir sur MyEsaip ou Alcuin et le
+          calendrier, il peut y avoir un délai de 24 heures.
+        </TypographyP>
+
+        <TypographyH2>Installation</TypographyH2>
+        <TypographyP className="mb-6">
+          Veuillez sélectionner la catégorie correspondant à votre filière ainsi que la filière dans laquelle vous êtes.
+        </TypographyP>
+
+        <div className="flex flex-col gap-4">
           <Combobox
-            values={dropdownValues}
-            placeholder="Sélectionner la filière."
-            {...{ currentValue, setCurrentValue }}
+            values={dropdownCategoriesValues}
+            placeholder="Sélectionner la catégorie"
+            {...{ currentValue: currentCategory, setCurrentValue: setCurrentCategory }}
           />
-        )}
-
-        <Button className="w-full" disabled={currentValue === ''} onClick={onClick}>
-          Copier 🎉
-        </Button>
-
-        <div className="flex items-center gap-2 text-zinc-300 my-2">
-          <div className="w-full h-[2px] bg-zinc-300"></div>
-          <p>OU</p>
-          <div className="w-full h-[2px] bg-zinc-300"></div>
+          {currentCategory !== '' && (
+            <Combobox
+              values={dropdownValues}
+              placeholder="Sélectionner la filière."
+              {...{ currentValue, setCurrentValue }}
+            />
+          )}
+          <Button className="w-full" disabled={currentValue === ''} onClick={onClick}>
+            Copier 🎉
+          </Button>
+          <div className="flex items-center gap-2 text-zinc-300 my-2">
+            <div className="w-full h-[2px] bg-zinc-300"></div>
+            <p>OU</p>
+            <div className="w-full h-[2px] bg-zinc-300"></div>
+          </div>
+          <Link href="/guide" className="w-full">
+            <Button className="flex items-center gap-2 w-full" variant="outline">
+              Guides d&apos;installation <ArrowRight strokeWidth={1.5} />
+            </Button>
+          </Link>
+          <Link href="/auth" className="w-full">
+            <Button className="w-full">Se connecter</Button>
+          </Link>
         </div>
 
-        <Link href="/guide" className="w-full">
-          <Button className="flex items-center gap-2 w-full" variant="outline">
-            Guides d&apos;installation <ArrowRight strokeWidth={1.5} />
-          </Button>
-        </Link>
-
-        <Link href="/auth" className="w-full">
-          <Button className="w-full">Se connecter</Button>
-        </Link>
-      </div>
-    </main>
+        <p className="text-sm mx-auto mt-12">Lukas Laudrain - Alex Fougeroux 2023</p>
+      </main>
+    </>
   );
 }

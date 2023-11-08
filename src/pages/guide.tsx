@@ -7,7 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 
 const GuidePage = () => {
   return (
-    <main className="min-h-[100svh] flex flex-col p-4 gap-2">
+    <main className="container flex flex-col py-12 gap-2">
       <Head>
         <title>Alcuin Scrapper</title>
       </Head>
@@ -42,7 +42,9 @@ const GuidePage = () => {
               <a href="https://calendar.google.com" className="underline text-blue-600">
                 Google Calendar
               </a>
-              .
+              . Il est aussi possible que lorsque vous cliquiez sur le liens, il vous amène vers une version assez
+              ancienne de Google Calendar, dans ce cas, il faudra cliquer sur le liens &quot;Desktop&quot; en bas de la
+              page.
             </p>
             <video
               src="/android-guide.mp4"
