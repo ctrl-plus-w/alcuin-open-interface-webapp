@@ -18,7 +18,7 @@ const withErrorHandler = (handler: NextApiHandler, method?: HTTPMethod | HTTPMet
 
       await handler(req, res);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       if (err instanceof ApiError) return res.status(err.status).json({ error: err.message });
 
       return res.status(500).json({ error: 'Server error.' });
