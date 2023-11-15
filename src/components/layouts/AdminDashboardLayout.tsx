@@ -42,6 +42,20 @@ const AdminDashboardLayout = ({ className, children }: IProps) => {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
+            <Link href="/admin-dashboard/groups-calendars" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>Calendriers de groupe</NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <Link href="/admin-dashboard/professors-calendars" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Calendriers d&apos;enseignants
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
             <Button onClick={signOut} variant="destructive">
               Se déconnecter
             </Button>

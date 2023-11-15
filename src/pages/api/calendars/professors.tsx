@@ -20,11 +20,24 @@ const handler: NextApiHandler = async (req, res) => {
 
   const courses = await coursesRepository.getAllByProfessor(name, { disabled: false });
 
+  const coursesWithoutDescription = courses.map((course) => ({ ...course, description: '' }));
+
+  const filteredCourses = coursesWithoutDescription.filter((course, index) => {
+    const _index = coursesWithoutDescription.findIndex(
+      (_course) =>
+        _course.start_datetime === course.start_datetime &&
+        _course.end_datetime === course.end_datetime &&
+        _course.location === course.location,
+    );
+
+    return _index === index;
+  });
+
   const cal = new ICalCalendar({
     name: 'Alcuin Open Calendar',
   });
 
-  for (const course of courses) {
+  for (const course of filteredCourses) {
     const title = course.description !== '' ? `⚠ ${course.title}` : course.title;
 
     cal.createEvent({

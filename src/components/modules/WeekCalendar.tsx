@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import CardGroup from '@/components/features/courses/card-group';
 import { addDays, format, subDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { TypographyH4 } from '@/ui/typography';
 
@@ -15,6 +16,7 @@ import { cn } from '@/lib/utils';
 
 interface IProps {
   date: Date;
+  direction: 1 | -1;
 
   courses: Database.ICourse[];
   highlightedCourses?: Database.ICourse[];
@@ -24,7 +26,7 @@ interface IProps {
   className?: string;
 }
 
-const WeekCalendar = ({ courses, date, highlightedCourses = [], onEditCb, className }: IProps) => {
+const WeekCalendar = ({ direction, courses, date, highlightedCourses = [], onEditCb, className }: IProps) => {
   const breakpoint = useTailwindBreakpoint();
 
   /**
@@ -59,27 +61,49 @@ const WeekCalendar = ({ courses, date, highlightedCourses = [], onEditCb, classN
   }, [date, breakpoint]);
 
   return (
-    <div className={cn('flex divide-x divide-zinc-300 w-full h-full', className)}>
-      {getDatesInRange(startDate, endDate).map((date, i, arr) => (
-        <div
-          key={i}
-          className="flex flex-col gap-2 items-center flex-grow-0 w-full h-full p-4 first:pl-0 last:pr-0"
-          style={{ width: `${(1 / arr.length) * 100}%` }}
+    <div className="relative w-full h-full overflow-hidden">
+      <AnimatePresence>
+        <motion.div
+          key={date.toISOString()}
+          variants={{
+            enter: (d: number) => ({ x: d > 0 ? 1000 : -1000, opacity: 0 }),
+            center: { zIndex: 1, x: 0, opacity: 1 },
+            exit: (d: number) => ({ x: d < 0 ? 1000 : -1000, opacity: 0, zIndex: 0 }),
+          }}
+          transition={{
+            x: { type: 'spring', stiffness: 300, damping: 30 },
+            opacity: { duration: 0.2 },
+          }}
+          custom={direction}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          className="absolute inset-0 w-full h-full"
         >
-          <TypographyH4 className="mb-2">{format(date, 'EEE dd LLLL', { locale: fr })}</TypographyH4>
+          <div className={cn('flex divide-x divide-zinc-300 w-full h-full', className)}>
+            {getDatesInRange(startDate, endDate).map((date, i, arr) => (
+              <div
+                key={i}
+                className="flex flex-col gap-2 items-center flex-grow-0 w-full h-full p-4 first:pl-0 last:pr-0"
+                style={{ width: `${(1 / arr.length) * 100}%` }}
+              >
+                <TypographyH4 className="mb-2">{format(date, 'EEE dd LLLL', { locale: fr })}</TypographyH4>
 
-          {groupCoursesByTime(courses.filter((course) => isSameDate(new Date(course.start_datetime), date))).map(
-            (courseGroup) => (
-              <CardGroup
-                courses={courseGroup}
-                onEditCb={onEditCb}
-                highlightedCourses={highlightedCourses}
-                key={courseGroup[0].start_datetime}
-              />
-            ),
-          )}
-        </div>
-      ))}
+                {groupCoursesByTime(courses.filter((course) => isSameDate(new Date(course.start_datetime), date))).map(
+                  (courseGroup) => (
+                    <CardGroup
+                      courses={courseGroup}
+                      onEditCb={onEditCb}
+                      highlightedCourses={highlightedCourses}
+                      key={courseGroup[0].start_datetime}
+                    />
+                  ),
+                )}
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 };
