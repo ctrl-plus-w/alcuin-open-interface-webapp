@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 
 import { TypographyH1, TypographyH2, TypographyInlineCode, TypographyP } from '@/components/ui/typography';
+import { prettifyCalendarName } from '@/utils/string.util';
 import { ArrowRight } from 'lucide-react';
 
 import { Button } from '@/ui/button';
@@ -12,11 +13,6 @@ import { useToast } from '@/ui/use-toast';
 import Combobox from '@/element/ComboBox';
 
 import CALENDARS, { BASEPATH } from '@/constant/Calendars';
-
-const prettifyCalendarName = (name: string) => {
-  if (!name.startsWith('23_24')) return name.replaceAll('_', ' ');
-  return name.replaceAll('_', ' ');
-};
 
 export default function Home() {
   const { toast } = useToast();
