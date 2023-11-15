@@ -72,3 +72,25 @@ end;
 $function$
 ```
 You then need to create the triggers to run the functions. The condition table is the `auth users` table, you need to match the event with the function selected, set the trigger to run __after the event__ and run it __one time per row__.
+
+## Get unique professors function
+```pgsql
+CREATE OR REPLACE FUNCTION get_professors()
+RETURNS SETOF text AS $$
+DECLARE
+    value text;
+BEGIN
+    -- Use UNNEST and DISTINCT to get distinct unnested values from the array column
+    FOR value IN SELECT DISTINCT unnest(professors) FROM courses
+    LOOP
+        -- Return each distinct unnested value
+        RETURN NEXT value;
+    END LOOP;
+
+    RETURN;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Call the function
+SELECT * FROM get_professors();
+```
