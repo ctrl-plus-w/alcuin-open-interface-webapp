@@ -8,6 +8,10 @@ export const arrayToString = (arr: string[]): string => {
   return `${arr.slice(0, arr.length - 1).join(', ')} and ${arr[arr.length - 1]}`;
 };
 
+export const isDefined = <T>(el: T | undefined): el is T => {
+  return el !== undefined;
+};
+
 export const unique = <T>(arr: T[]): T[] => {
   return Array.from(new Set(arr));
 };

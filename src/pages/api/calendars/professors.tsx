@@ -1,5 +1,7 @@
 import { NextApiHandler } from 'next';
 
+import { isDefined } from '@/utils/array.util';
+import { prettifyCalendarName } from '@/utils/string.util';
 import { addHours } from 'date-fns';
 import { ICalCalendar } from 'ical-generator';
 
@@ -22,16 +24,20 @@ const handler: NextApiHandler = async (req, res) => {
 
   const coursesWithoutDescription = courses.map((course) => ({ ...course, description: '' }));
 
-  const filteredCourses = coursesWithoutDescription.filter((course, index) => {
-    const _index = coursesWithoutDescription.findIndex(
-      (_course) =>
+  const filteredCourses = coursesWithoutDescription
+    .map((course, index) => {
+      const matcher = (_course: Database.ICourse) =>
         _course.start_datetime === course.start_datetime &&
         _course.end_datetime === course.end_datetime &&
-        _course.location === course.location,
-    );
+        _course.location === course.location;
 
-    return _index === index;
-  });
+      const _index = coursesWithoutDescription.findIndex(matcher);
+
+      const groups = coursesWithoutDescription.filter(matcher).map((c) => c.group);
+
+      return _index === index ? { ...course, groups } : undefined;
+    })
+    .filter(isDefined);
 
   const cal = new ICalCalendar({
     name: 'Alcuin Open Calendar',
@@ -43,7 +49,7 @@ const handler: NextApiHandler = async (req, res) => {
     cal.createEvent({
       start: addHours(new Date(course.start_datetime), 1),
       end: addHours(new Date(course.end_datetime), 1),
-      summary: title,
+      summary: `ESAIP | ${title} | ${course.groups.map(prettifyCalendarName).join(' - ')}`,
       description: course.description,
       location: course.location,
     });
