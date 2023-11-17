@@ -10,6 +10,8 @@ import { Input } from '@/ui/input';
 import { TypographyH1 } from '@/ui/typography';
 import { useToast } from '@/ui/use-toast';
 
+import { onChange } from '@/util/react.util';
+
 type FormSchemaType = {
   email: string;
   password: string;
@@ -28,11 +30,6 @@ const AuthenticationPage = (): React.ReactElement => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const onChange =
-    (setter: React.Dispatch<React.SetStateAction<string>>) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setter(event.target.value);
-    };
 
   const isValid = useMemo(() => {
     const { error } = formSchema.validate({ email, password });
