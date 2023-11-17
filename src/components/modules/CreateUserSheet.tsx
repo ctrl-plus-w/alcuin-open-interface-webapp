@@ -112,11 +112,11 @@ const CreateUserSheet = ({ loggedInUser }: IProps) => {
           </div>
 
           <div className="flex flex-col space-y-2">
-            <Label htmlFor="username">Mot de passe</Label>
+            <Label htmlFor="password">Mot de passe</Label>
 
             <div className="col-span-3 flex items-center space-x-2">
               <Input
-                id="username"
+                id="password"
                 type={showPassword ? 'text' : 'password'}
                 placeholder="@peduarte"
                 value={password}
