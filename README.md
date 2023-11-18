@@ -17,6 +17,7 @@ You have access to 4 default snippets in the `.vscode/snippets.code-snippets` fi
 ### Supabase
 
 #### Profiles table
+
 ```pgsql
 create table public.profiles (
   id uuid not null,
@@ -25,10 +26,12 @@ create table public.profiles (
   constraint profiles_pkey primary key (id),
   constraint profiles_id_fkey foreign key (id) references auth.users (id) on delete cascade
 ) tablespace pg_default;
- ```
+```
 
 #### User handling functions
+
 When creating the functions, you need to set the type of security to **SECURITY DEFINER** and set the return type to **TRIGGER**.
+
 ```pgsql
 -- When creating a user
 CREATE OR REPLACE FUNCTION public.handle_new_user()
@@ -71,9 +74,11 @@ begin
 end;
 $function$
 ```
-You then need to create the triggers to run the functions. The condition table is the `auth users` table, you need to match the event with the function selected, set the trigger to run __after the event__ and run it __one time per row__.
+
+You then need to create the triggers to run the functions. The condition table is the `auth users` table, you need to match the event with the function selected, set the trigger to run **after the event** and run it **one time per row**.
 
 ## Get unique professors function
+
 ```pgsql
 CREATE OR REPLACE FUNCTION get_professors()
 RETURNS SETOF text AS $$

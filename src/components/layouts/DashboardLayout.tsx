@@ -31,15 +31,15 @@ const DashboardLayout = ({ className, children }: IProps) => {
         <NavigationMenuList>
           <NavigationMenuItem>
             <Link href="/dashboard" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>Home</NavigationMenuLink>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>Accueil</NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
 
-          {/* <NavigationMenuItem>
-            <Link href="/admin-dashboard/users" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>Utilisateurs</NavigationMenuLink>
+          <NavigationMenuItem>
+            <Link href="/dashboard/grades" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>Notes</NavigationMenuLink>
             </Link>
-          </NavigationMenuItem> */}
+          </NavigationMenuItem>
 
           <NavigationMenuItem>
             <Button onClick={signOut} variant="destructive">
@@ -49,7 +49,7 @@ const DashboardLayout = ({ className, children }: IProps) => {
         </NavigationMenuList>
       </NavigationMenu>
 
-      <main className={cn('p-6', className)}>{children}</main>
+      <main className={cn('container p-6', className)}>{children}</main>
     </div>
   );
 };
