@@ -49,7 +49,7 @@ const DashboardLayout = ({ className, children }: IProps) => {
         </NavigationMenuList>
       </NavigationMenu>
 
-      <main className={cn('container p-6', className)}>{children}</main>
+      <main className={cn('p-6', className)}>{children}</main>
     </div>
   );
 };

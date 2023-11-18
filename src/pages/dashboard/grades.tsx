@@ -52,7 +52,7 @@ const DashboardGradesPage = ({ user: _user }: IProps) => {
   }, [state, user]);
 
   return (
-    <DashboardLayout className="h-full flex flex-col gap-6 items-start justify-start">
+    <DashboardLayout className="container h-full flex flex-col gap-6 items-start justify-start">
       <Head>
         <title>Dashboard - Notes</title>
       </Head>
