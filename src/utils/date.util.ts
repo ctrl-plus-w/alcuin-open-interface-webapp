@@ -43,12 +43,24 @@ export const getSimpleTime = (date: Date): string => {
   return [date.getHours(), date.getMinutes()].map(twoDigit).join(':');
 };
 
-export const addDays = (date: Date, amount: number): Date => {
-  const _date = new Date(date);
-  _date.setDate(date.getDate() + amount);
-  return _date;
-};
+/**
+ * Get the next monday if the date is a day in the week end, otherwise return the same date
+ * @param inputDate The date input
+ * @returns A date
+ */
+export const getNextMondayIfWeekEnd = (inputDate: Date): Date => {
+  const dayOfWeek = inputDate.getDay();
 
-export const subDays = (date: Date, amount: number): Date => {
-  return addDays(date, -amount);
+  // Check if the day is Saturday (6) or Sunday (0)
+  if (dayOfWeek === 0 || dayOfWeek === 6) {
+    const daysUntilMonday = dayOfWeek === 0 ? 1 : 2;
+
+    const nextMonday = new Date(inputDate);
+    nextMonday.setDate(inputDate.getDate() + daysUntilMonday);
+
+    return nextMonday;
+  }
+
+  // If inputDate is not a weekend day, return inputDate
+  return inputDate;
 };

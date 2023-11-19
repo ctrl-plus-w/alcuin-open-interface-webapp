@@ -10,7 +10,7 @@ import { TypographyH4 } from '@/ui/typography';
 import useTailwindBreakpoint from '@/hook/useTailwindBreakpoints';
 
 import { getDatesInRange } from '@/util/array.util';
-import { getFirstDayOfWeek, getLastDayOfWorkingWeek, isSameDate } from '@/util/date.util';
+import { getFirstDayOfWeek, getLastDayOfWorkingWeek, getNextMondayIfWeekEnd, isSameDate } from '@/util/date.util';
 
 import { cn } from '@/lib/utils';
 
@@ -26,7 +26,9 @@ interface IProps {
   className?: string;
 }
 
-const WeekCalendar = ({ direction, courses, date, highlightedCourses = [], onEditCb, className }: IProps) => {
+const WeekCalendar = ({ direction, courses, date: _date, highlightedCourses = [], onEditCb, className }: IProps) => {
+  const date = useMemo(() => getNextMondayIfWeekEnd(_date), [_date]);
+
   const breakpoint = useTailwindBreakpoint();
 
   /**
