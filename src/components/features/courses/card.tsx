@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { addHours } from 'date-fns';
 
@@ -39,6 +39,10 @@ const Card = ({ course, onEditCb, highlighted, className }: IProps) => {
   const { toastError } = useToast();
 
   const [notes, setNotes] = useState(course.description);
+
+  useEffect(() => {
+    setNotes(course.description);
+  }, [course]);
 
   /**
    * onSubmit even when the user edit the note
