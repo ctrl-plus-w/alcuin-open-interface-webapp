@@ -67,6 +67,7 @@ const DashboardGradesPage = ({ user: _user }: IProps) => {
                 <CardTitle>{label}</CardTitle>
                 <CardDescription>{ue}</CardDescription>
               </CardHeader>
+
               <CardContent>
                 <TypographyP>
                   Moyenne : {mean}/20 (coef: {coef})

@@ -87,7 +87,7 @@ const SettingsForm = ({ state, user, setUser, className }: IProps): ReactElement
       <TypographyH1 className="mb-3">Initialisation des paramètres</TypographyH1>
 
       {state === State.WAITING_PASSWORD && (
-        <form onSubmit={onSubmitPassword} className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4">
           <TypographyP className="mb-3">
             Veuillez entrer votre mot de passe Alcuin. Attention, la vérification du mot de passe peut prendre plusieurs
             minutes. De ce fait, soyez sur du mot de passe que vous entrez.
@@ -107,7 +107,7 @@ const SettingsForm = ({ state, user, setUser, className }: IProps): ReactElement
                 autoFocus={false}
               />
 
-              <Button onClick={() => setShowPassword((v) => !v)}>
+              <Button onClick={() => setShowPassword((v) => !v)} type="button">
                 {showPassword ? <EyeIcon className="h-4 w-4" /> : <EyeOffIcon className="h-4 w-4" />}
               </Button>
             </div>
@@ -115,7 +115,7 @@ const SettingsForm = ({ state, user, setUser, className }: IProps): ReactElement
             {user.alcuin_password === 'INVALID' && <small className="text-red-700 italic">Mot de passe invalide</small>}
           </div>
 
-          <Button disabled={password === ''} type="submit" className="ml-auto">
+          <Button disabled={password === ''} onClick={onSubmitPassword} className="ml-auto">
             Envoyer le mot de passe
           </Button>
         </form>

@@ -61,7 +61,7 @@ const UserDropdownMenu = ({ user, loggedInUser }: IProps) => {
   };
 
   return (
-    <>
+    <div className="flex">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="h-8 w-8 p-0">
@@ -108,7 +108,7 @@ const UserDropdownMenu = ({ user, loggedInUser }: IProps) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
 };
 

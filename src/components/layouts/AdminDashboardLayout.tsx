@@ -28,7 +28,7 @@ const AdminDashboardLayout = ({ className, children }: IProps) => {
   return (
     <div className="w-screen h-[100svh] flex flex-col">
       <NavigationMenu className="flex-grow-0 p-6 w-full border-b border-b-gray-200">
-        <NavigationMenuList>
+        <NavigationMenuList className="flex-col items-start space-x-0 md:flex-row md:items-center md:space-x-1">
           <NavigationMenuItem>
             <Link href="/admin-dashboard" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>Home</NavigationMenuLink>
@@ -56,7 +56,7 @@ const AdminDashboardLayout = ({ className, children }: IProps) => {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Button onClick={signOut} variant="destructive">
+            <Button onClick={signOut} variant="destructive" className="ml-4 mt-4 md:m-0">
               Se déconnecter
             </Button>
           </NavigationMenuItem>
