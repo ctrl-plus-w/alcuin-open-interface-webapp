@@ -18,7 +18,7 @@ declare global {
       alcuin_password: string | null;
       available_path_names: string[] | null;
 
-      created_at: number;
+      created_at: string;
     }
 
     export type ICreateProfile = Omit<IProfile, 'id' | 'created_at'>;
@@ -38,7 +38,7 @@ declare global {
 
       disabled: boolean;
 
-      created_at: number;
+      created_at: string;
     }
 
     export type ICreateCourse = Omit<ICourse, 'id' | 'created_at'>;
@@ -59,11 +59,26 @@ declare global {
 
       credits: string;
 
-      created_at: number;
+      created_at: string;
     }
 
     export type ICreateGrade = undefined;
     export type IUpdateGrade = undefined;
+
+    export interface IQueue {
+      id: string;
+
+      user_id: string;
+
+      command: string;
+      message: string;
+      finished: boolean;
+
+      created_at: string;
+    }
+
+    export type ICreateQueue = Omit<IQueue, 'id' | 'created_at'>;
+    export type IUpdateQueue = Partial<ICreateQueue>;
   }
 }
 

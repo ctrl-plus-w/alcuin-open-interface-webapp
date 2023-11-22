@@ -56,6 +56,12 @@ const AdminDashboardLayout = ({ className, children }: IProps) => {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
+            <Link href="/admin-dashboard/queue" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>Queue</NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
             <Button onClick={signOut} variant="destructive" className="ml-4 mt-4 md:m-0">
               Se déconnecter
             </Button>
