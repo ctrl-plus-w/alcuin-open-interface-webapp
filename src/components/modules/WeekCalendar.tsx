@@ -63,7 +63,7 @@ const WeekCalendar = ({ direction, courses, date: _date, highlightedCourses = []
   }, [date, breakpoint]);
 
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div className="relative w-full h-full overflow-x-hidden">
       <AnimatePresence>
         <motion.div
           key={date.toISOString()}

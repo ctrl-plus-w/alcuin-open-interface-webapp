@@ -63,7 +63,7 @@ const AdminDashboardLayout = ({ className, children }: IProps) => {
         </NavigationMenuList>
       </NavigationMenu>
 
-      <main className={cn('p-6', className)}>{children}</main>
+      <main className={cn('p-6 overflow-y-scroll', className)}>{children}</main>
     </div>
   );
 };
