@@ -47,37 +47,35 @@ const AdminDashboardQueuePage = () => {
   }, []);
 
   return (
-    <AdminDashboardLayout className="flex flex-col justify-center items-center gap-4">
+    <AdminDashboardLayout className="flex flex-wrap justify-center items-center gap-2">
       <Head>
         <title>Dashboard - Queue</title>
       </Head>
 
-      <div className="flex flex-wrap gap-2">
-        {sortedQueue.map((command) => (
-          <Card key={command.id} className="flex-1 basis-10">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 font-mono">
-                <div
-                  className={cn(
-                    'w-4 h-4 rounded-full ring',
-                    command.finished
-                      ? command.message
-                        ? 'bg-red-600 ring-red-200'
-                        : 'bg-green-600 ring-green-200'
-                      : 'bg-orange-600 ring-orange-200',
-                  )}
-                ></div>
-                {command.command}
-              </CardTitle>
-              <CardDescription>{capitalize(formatRelative(new Date(command.created_at), new Date()))}</CardDescription>
-            </CardHeader>
+      {sortedQueue.map((command) => (
+        <Card key={command.id} className="flex-1 basis-10">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 font-mono">
+              <div
+                className={cn(
+                  'w-4 h-4 rounded-full ring',
+                  command.finished
+                    ? command.message
+                      ? 'bg-red-600 ring-red-200'
+                      : 'bg-green-600 ring-green-200'
+                    : 'bg-orange-600 ring-orange-200',
+                )}
+              ></div>
+              {command.command}
+            </CardTitle>
+            <CardDescription>{capitalize(formatRelative(new Date(command.created_at), new Date()))}</CardDescription>
+          </CardHeader>
 
-            <CardContent>
-              {command.message ? <p>{command.message}</p> : <p className="opacity-50">Aucun message.</p>}
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+          <CardContent>
+            {command.message ? <p>{command.message}</p> : <p className="opacity-50">Aucun message.</p>}
+          </CardContent>
+        </Card>
+      ))}
     </AdminDashboardLayout>
   );
 };
