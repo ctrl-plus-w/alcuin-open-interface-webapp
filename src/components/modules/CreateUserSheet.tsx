@@ -50,7 +50,7 @@ const CreateUserSheet = ({ loggedInUser }: IProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const generatePassword = () => {
-    setPassword(generator.generate({ length: 8, numbers: true }));
+    setPassword(generator.generate({ length: 16, numbers: true }));
   };
 
   const isValid = useMemo(() => {
