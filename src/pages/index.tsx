@@ -62,7 +62,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Alcuin Scrapper</title>
+        <title>Calendrier Alcuin</title>
       </Head>
 
       <main className="container flex flex-col py-12">
