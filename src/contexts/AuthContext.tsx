@@ -83,9 +83,8 @@ const AuthContextProvider = ({ children }: IProps) => {
   }, []);
 
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange(async (event, _session) => {
-      console.log(event);
-      setSession(_session);
+    const { data } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      setSession(session);
     });
 
     return () => data.subscription.unsubscribe();
