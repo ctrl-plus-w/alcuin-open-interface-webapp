@@ -1,11 +1,14 @@
 import { useMemo } from 'react';
 
-import useTailwindBreakpoint from '@/hooks/useTailwindBreakpoints';
 import { CellContext, ColumnDef } from '@tanstack/react-table';
 
 import UserDropdownMenu from '@/feature/users/dropdown-menu';
 
 import { Badge } from '@/ui/badge';
+
+import useTailwindBreakpoint from '@/hook/useTailwindBreakpoints';
+
+import { prettifyCalendarName } from '@/util/string.util';
 
 const IdCell = ({ row }: CellContext<Database.IProfile, any>) => {
   const breakpoint = useTailwindBreakpoint();
@@ -23,13 +26,13 @@ const IdCell = ({ row }: CellContext<Database.IProfile, any>) => {
 };
 
 const GroupsCell = ({ row }: CellContext<Database.IProfile, any>) => {
-  const rowGroups = row.getValue('groups');
+  const rowGroups = row.original.groups;
   const groups = Array.isArray(rowGroups) ? rowGroups : [];
 
   return (
     <div className="flex gap-2">
       {groups.map((group) => (
-        <Badge key={group}>{group}</Badge>
+        <Badge key={group}>{prettifyCalendarName(group)}</Badge>
       ))}
 
       {!groups.length && <p className="opacity-50 whitespace-nowrap">Aucun groupe.</p>}
