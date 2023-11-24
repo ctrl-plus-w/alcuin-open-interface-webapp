@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
-import { CoursesRepository } from '@/repositories/CoursesRepository';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
+
+import { CoursesRepository } from '@/repository/CoursesRepository';
 
 const useCoursesRepository = () => {
   const supabase = useSupabaseClient();
