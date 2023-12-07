@@ -14,6 +14,7 @@ import { useToast } from '@/ui/use-toast';
 import useProfilesRepository from '@/hook/useProfilesRepository';
 
 import { onChange } from '@/util/react.util';
+import { encryptDataWithRSA } from '@/util/string.util';
 import { cn } from '@/util/style.util';
 
 export enum State {
@@ -46,7 +47,13 @@ const SettingsForm = ({ state, user, setUser, className }: IProps): ReactElement
     event.preventDefault();
 
     try {
-      const _user = await profilesRepository.update(user.id, { alcuin_password: password });
+      const rsaPublicKeyStr = process.env.NEXT_PUBLIC_RSA_PUBLIC_KEY;
+      if (!rsaPublicKeyStr) throw new Error('Invalid server config, please contact the administrator.');
+
+      const rsaPublicKey = rsaPublicKeyStr.split('\n').join('\n');
+
+      const encryptedPassword = encryptDataWithRSA(password, rsaPublicKey);
+      const _user = await profilesRepository.update(user.id, { alcuin_password: encryptedPassword });
       if (_user) setUser(_user);
     } catch (err) {
       toastError(err);

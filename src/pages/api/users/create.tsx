@@ -1,11 +1,12 @@
 import { NextApiHandler } from 'next';
 
-import { RessourceNotFoundError, UnauthorizedError } from '@/classes/ApiError';
 import Joi from 'joi';
 
 import { ProfilesRepository } from '@/repository/ProfilesRepository';
 
 import withErrorHandler from '@/wrapper/withErrorHandler';
+
+import { RessourceNotFoundError, UnauthorizedError } from '@/class/ApiError';
 
 import supabase from '@/instance/supabaseAdmin';
 
