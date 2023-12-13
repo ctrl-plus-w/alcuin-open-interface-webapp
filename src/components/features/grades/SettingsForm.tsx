@@ -57,7 +57,13 @@ const SettingsForm = ({ state, user, setUser, className }: IProps): ReactElement
         throw new Error('Invalid server config, please contact the administrator.');
       }
 
-      const rsaPublicKey = rsaPublicKeyStr.split('\n').join('\n');
+      let rsaPublicKey = rsaPublicKeyStr.split('\n').join('\n');
+
+      if (rsaPublicKey.startsWith('"') && rsaPublicKeyStr.endsWith('"'))
+        rsaPublicKey = rsaPublicKeyStr.slice(1, rsaPublicKeyStr.length - 1);
+
+      // eslint-disable-next-line no-console
+      console.log(rsaPublicKey);
 
       const encryptedPassword = encryptDataWithRSA(password, rsaPublicKey);
       const _user = await profilesRepository.update(user.id, { alcuin_password: encryptedPassword });
