@@ -54,6 +54,9 @@ const SettingsForm = ({ state, user, setUser, className }: IProps): ReactElement
         throw new Error('Invalid server config, please contact the administrator.');
       }
 
+      // eslint-disable-next-line no-console
+      console.log(rsaPublicKeyStr);
+
       const rsaPublicKey = rsaPublicKeyStr.split('\n').join('\n');
 
       const encryptedPassword = encryptDataWithRSA(password, rsaPublicKey);
