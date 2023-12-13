@@ -1,12 +1,16 @@
-# NextJS Project Template
+# Next.js Project Template
 
-This repository is a NextJS project template using TailwindCSS, ESLint & Prettier.
+This repository is a Next.js project template using TailwindCSS, ESLint & Prettier.
 
 ## Installation
 
 1. Change the project name in the `package.json`.
 
 2. Run `npm install`
+
+## Important
+
+If you run this project on Vercel, you might need to set up the `NEXT_PUBLIC_RSA_PUBLIC_KEY` in the environnement variables. Please wrap the key inside quotes (") to avoid errors. (The error encountered might be : `length octect is too long at: (shallow)`)
 
 ## Snippets
 

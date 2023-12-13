@@ -49,6 +49,9 @@ const SettingsForm = ({ state, user, setUser, className }: IProps): ReactElement
     try {
       const rsaPublicKeyStr = process.env.NEXT_PUBLIC_RSA_PUBLIC_KEY;
 
+      // eslint-disable-next-line no-console
+      console.log(password, rsaPublicKeyStr);
+
       if (!rsaPublicKeyStr) {
         console.error('Missing environment variable `NEXT_PUBLIC_RSA_PUBLIC_KEY`.');
         throw new Error('Invalid server config, please contact the administrator.');
