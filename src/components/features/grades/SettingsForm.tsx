@@ -14,7 +14,7 @@ import { useToast } from '@/ui/use-toast';
 import useProfilesRepository from '@/hook/useProfilesRepository';
 
 import { onChange } from '@/util/react.util';
-import { encryptDataWithRSA } from '@/util/string.util';
+// import { encryptDataWithRSA } from '@/util/string.util';
 import { cn } from '@/util/style.util';
 
 export enum State {
@@ -62,9 +62,9 @@ const SettingsForm = ({ state, user, setUser, className }: IProps): ReactElement
       // eslint-disable-next-line no-console
       console.log(rsaPublicKey);
 
-      const encryptedPassword = encryptDataWithRSA(password, rsaPublicKey);
-      const _user = await profilesRepository.update(user.id, { alcuin_password: encryptedPassword });
-      if (_user) setUser(_user);
+      // const encryptedPassword = encryptDataWithRSA(password, rsaPublicKey);
+      // const _user = await profilesRepository.update(user.id, { alcuin_password: encryptedPassword });
+      // if (_user) setUser(_user);
     } catch (err) {
       toastError(err);
     }
