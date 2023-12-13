@@ -171,6 +171,7 @@ function useToast() {
   }, [state]);
 
   const toastError = (err: unknown) => {
+    console.error(err);
     const message =
       err && typeof err === 'object' && 'message' in err && typeof err.message === 'string'
         ? err.message
