@@ -11,9 +11,17 @@ export const capitalize = (str: string): string => {
 
 export const encryptDataWithRSA = (data: string, publicKey: string): string => {
   const buffer = Buffer.from(data, 'utf-8');
+
+  // eslint-disable-next-line no-console
+  console.log('Buffer :', buffer);
+
   const encryptedBuffer = crypto.publicEncrypt(
     { key: publicKey, padding: crypto.constants.RSA_PKCS1_OAEP_PADDING },
     buffer,
   );
+
+  // eslint-disable-next-line no-console
+  console.log('Encrypted buffer :', encryptedBuffer);
+
   return encryptedBuffer.toString('base64');
 };
