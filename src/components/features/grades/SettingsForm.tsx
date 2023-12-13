@@ -48,7 +48,11 @@ const SettingsForm = ({ state, user, setUser, className }: IProps): ReactElement
 
     try {
       const rsaPublicKeyStr = process.env.NEXT_PUBLIC_RSA_PUBLIC_KEY;
-      if (!rsaPublicKeyStr) throw new Error('Invalid server config, please contact the administrator.');
+      if (!rsaPublicKeyStr) {
+        console.error('Missing environment variable `NEXT_PUBLIC_RSA_PUBLIC_KEY`.');
+        console.error(process.env);
+        throw new Error('Invalid server config, please contact the administrator.');
+      }
 
       const rsaPublicKey = rsaPublicKeyStr.split('\n').join('\n');
 
