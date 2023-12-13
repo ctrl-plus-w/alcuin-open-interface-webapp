@@ -59,6 +59,9 @@ const SettingsForm = ({ state, user, setUser, className }: IProps): ReactElement
 
       const rsaPublicKey = rsaPublicKeyStr.split('\n').join('\n');
 
+      // eslint-disable-next-line no-console
+      console.log(rsaPublicKey);
+
       const encryptedPassword = encryptDataWithRSA(password, rsaPublicKey);
       const _user = await profilesRepository.update(user.id, { alcuin_password: encryptedPassword });
       if (_user) setUser(_user);
