@@ -2,6 +2,7 @@ import type { Dispatch, ReactElement, SetStateAction } from 'react';
 import { FormEvent, useEffect, useState } from 'react';
 
 import { Label } from '@radix-ui/react-label';
+import axios, { AxiosResponse } from 'axios';
 import { EyeIcon, EyeOffIcon, Loader2 } from 'lucide-react';
 
 import { Button } from '@/ui/button';
@@ -14,7 +15,6 @@ import { useToast } from '@/ui/use-toast';
 import useProfilesRepository from '@/hook/useProfilesRepository';
 
 import { onChange } from '@/util/react.util';
-import { encryptDataWithRSA } from '@/util/string.util';
 import { cn } from '@/util/style.util';
 
 export enum State {
@@ -47,25 +47,12 @@ const SettingsForm = ({ state, user, setUser, className }: IProps): ReactElement
     event.preventDefault();
 
     try {
-      const rsaPublicKeyStr = process.env.NEXT_PUBLIC_RSA_PUBLIC_KEY;
+      const {
+        data: { password: encryptedPassword },
+      } = await axios.get<any, AxiosResponse<{ password: string }>>('/api/encrypt-password', {
+        params: { password },
+      });
 
-      // eslint-disable-next-line no-console
-      console.log(password, rsaPublicKeyStr);
-
-      if (!rsaPublicKeyStr) {
-        console.error('Missing environment variable `NEXT_PUBLIC_RSA_PUBLIC_KEY`.');
-        throw new Error('Invalid server config, please contact the administrator.');
-      }
-
-      let rsaPublicKey = rsaPublicKeyStr.split('\n').join('\n');
-
-      if (rsaPublicKey.startsWith('"') && rsaPublicKeyStr.endsWith('"'))
-        rsaPublicKey = rsaPublicKeyStr.slice(1, rsaPublicKeyStr.length - 1);
-
-      // eslint-disable-next-line no-console
-      console.log(rsaPublicKey);
-
-      const encryptedPassword = encryptDataWithRSA(password, rsaPublicKey);
       const _user = await profilesRepository.update(user.id, { alcuin_password: encryptedPassword });
       if (_user) setUser(_user);
     } catch (err) {
