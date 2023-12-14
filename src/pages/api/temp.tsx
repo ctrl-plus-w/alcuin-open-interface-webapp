@@ -8,6 +8,7 @@ const handler: NextApiHandler = (req, res) => {
   if (!publicKeyStr) return res.status(500).json({ message: 'Public key not found' });
 
   const publicKey = atob(publicKeyStr);
+  // eslint-disable-next-line no-console
   console.log(publicKey);
 
   const data = encryptDataWithRSA('test123', publicKey);
