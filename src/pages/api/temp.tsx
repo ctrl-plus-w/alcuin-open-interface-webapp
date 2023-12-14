@@ -1,9 +1,17 @@
+import { NextApiHandler } from 'next';
+
 import { encryptDataWithRSA } from '@/util/string.util';
 
-const handler = () => {
-  const publicKey = process.env.NEXT_PUBLIC_RSA_PUBLIC_KEY;
+const handler: NextApiHandler = (req, res) => {
+  const publicKeyStr = process.env.NEXT_PUBLIC_RSA_PUBLIC_KEY;
 
-  return publicKey ? encryptDataWithRSA('test123', publicKey) : { message: 'Public key not found.' };
+  if (!publicKeyStr) return res.status(500).json({ message: 'Public key not found' });
+
+  const publicKey = atob(publicKeyStr);
+  console.log(publicKey);
+
+  const data = encryptDataWithRSA('test123', publicKey);
+  res.status(200).json(data);
 };
 
 export default handler;
