@@ -10,4 +10,6 @@ const supabase = createClient(supabaseUrl, serviceRoleKey, {
   auth: { autoRefreshToken: false, persistSession: false },
 });
 
+export { supabaseUrl, serviceRoleKey };
+
 export default supabase;
