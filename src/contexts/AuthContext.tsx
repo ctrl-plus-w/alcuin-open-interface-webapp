@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { Session, useSupabaseClient } from '@supabase/auth-helpers-react';
 
@@ -83,8 +83,8 @@ const AuthContextProvider = ({ children }: IProps) => {
   }, []);
 
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setSession(session);
+    const { data } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
+      if (!shallowCompareSessions(session, newSession)) setSession(newSession);
     });
 
     return () => data.subscription.unsubscribe();
