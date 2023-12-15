@@ -84,11 +84,13 @@ const AuthContextProvider = ({ children }: IProps) => {
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
-      if (!shallowCompareSessions(session, newSession)) setSession(newSession);
+      if (!shallowCompareSessions(session, newSession)) {
+        setSession(newSession);
+      }
     });
 
     return () => data.subscription.unsubscribe();
-  }, []);
+  }, [session]);
 
   return (
     <AuthContext.Provider
