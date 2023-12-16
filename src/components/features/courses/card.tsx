@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { addHours } from 'date-fns';
 
@@ -56,28 +56,33 @@ const Card = ({ course, onEditCb, highlighted, className }: IProps) => {
     }
   };
 
+  const CardContent = useCallback(
+    () => (
+      <div className="flex flex-col items-start m-2">
+        <p className="text-muted-foreground text-xs">{course.location ?? 'Pas de location'}</p>
+        <p className="truncate w-full text-left text-foreground font-semibold">
+          {course.description !== '' ? '⚠️ ' : ''}
+          {course.title}
+        </p>
+
+        <p className="text-foreground text-xs mt-3">
+          {[course.start_datetime, course.end_datetime].map((d) => getSimpleTime(addHours(new Date(d), 1))).join(' - ')}
+        </p>
+      </div>
+    ),
+    [course],
+  );
+
   return (
     <Sheet>
       <SheetTrigger
         className={cn(
-          'w-full bg-purple-200 rounded-md text-sm overflow-hidden',
+          'w-full bg-[#20212E] border border-border rounded-md text-sm overflow-hidden',
           highlighted && 'outline-dashed outline-offset-2 outline-purple-800',
           className,
         )}
       >
-        <div className="flex flex-col items-start m-2">
-          <p className="truncate w-full text-left text-purple-700 font-semibold">
-            {course.description !== '' ? '⚠️ ' : ''}
-            {course.title}
-          </p>
-
-          <p className="text-purple-700 text-xs">{course.location ?? 'Pas de location'}</p>
-          <p className="text-purple-700 text-xs">
-            {[course.start_datetime, course.end_datetime]
-              .map((d) => getSimpleTime(addHours(new Date(d), 1)))
-              .join(' - ')}
-          </p>
-        </div>
+        <CardContent />
       </SheetTrigger>
 
       <SheetContent className="flex flex-col  gap-4">
@@ -89,21 +94,7 @@ const Card = ({ course, onEditCb, highlighted, className }: IProps) => {
           </SheetDescription>
         </SheetHeader>
 
-        <div className="flex flex-col gap-1 w-full bg-purple-200 rounded-md p-2 overflow-hidden">
-          <p className="truncate w-full text-purple-700 font-semibold">
-            {course.description !== '' ? '⚠️ ' : ''}
-            {course.title}
-          </p>
-
-          <div className="flex w-full justify-between text-purple-700 text-sm">
-            <p>{course.location ?? 'Pas de location'}</p>
-            <p>
-              {[course.start_datetime, course.end_datetime]
-                .map((d) => getSimpleTime(addHours(new Date(d), 1)))
-                .join(' - ')}
-            </p>
-          </div>
-        </div>
+        <CardContent />
 
         <Label htmlFor="note">Notes</Label>
         <Textarea id="notes" value={notes} onChange={onChange(setNotes)} />

@@ -90,7 +90,7 @@ const SettingsForm = ({ state, user, setUser, className }: IProps): ReactElement
   if (state === State.DONE) return <></>;
 
   return (
-    <div className={className}>
+    <div className={cn('max-w-2xl p-8 m-auto', className)}>
       <TypographyH1 className="mb-3">Initialisation des paramètres</TypographyH1>
 
       {state === State.WAITING_PASSWORD && (

@@ -25,7 +25,7 @@ const AdminGroupsCalendarsPage = () => {
 
   const [courses, setCourses] = useState<Database.ICourse[]>([]);
 
-  const [[direction, relativeDate], setRelativeDateAndDirection] = useState<[1 | -1, Date]>([1, new Date()]);
+  const [relativeDate, setRelativeData] = useState<Date>(new Date());
 
   useEffect(() => {
     setCurrentValue('');
@@ -67,7 +67,7 @@ const AdminGroupsCalendarsPage = () => {
   useEffect(() => {
     if (!currentValue) return;
 
-    fetchCourses();
+    fetchCourses().then();
   }, [currentValue]);
 
   return (
@@ -90,10 +90,10 @@ const AdminGroupsCalendarsPage = () => {
           />
         )}
 
-        <DatePicker relativeDate={relativeDate} setRelativeDateAndDirection={setRelativeDateAndDirection} />
+        <DatePicker relativeDate={relativeDate} setRelativeDate={setRelativeData} />
       </div>
 
-      <WeekCalendar date={relativeDate} courses={courses} onEditCb={fetchCourses} direction={direction} />
+      <WeekCalendar date={relativeDate} courses={courses} onEditCb={fetchCourses} />
     </AdminDashboardLayout>
   );
 };

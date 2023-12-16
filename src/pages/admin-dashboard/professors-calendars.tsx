@@ -41,7 +41,7 @@ const AdminProfessorsCalendarsPage = ({
 
   const [currentProfessor, setCurrentProfessor] = useState<string>('');
 
-  const [[direction, relativeDate], setRelativeDateAndDirection] = useState<[1 | -1, Date]>([1, new Date()]);
+  const [relativeDate, setRelativeDateAndDirection] = useState<Date>(new Date());
 
   /**
    * Fetch the courses of the selected group (not disabled)
@@ -72,7 +72,7 @@ const AdminProfessorsCalendarsPage = ({
   useEffect(() => {
     if (currentProfessor === '') return;
 
-    fetchCourses();
+    fetchCourses().then();
   }, [currentProfessor]);
 
   const professorsValues = useMemo(
@@ -93,10 +93,10 @@ const AdminProfessorsCalendarsPage = ({
           {...{ currentValue: currentProfessor, setCurrentValue: setCurrentProfessor }}
         />
 
-        <DatePicker relativeDate={relativeDate} setRelativeDateAndDirection={setRelativeDateAndDirection} />
+        <DatePicker relativeDate={relativeDate} setRelativeDate={setRelativeDateAndDirection} />
       </div>
 
-      <WeekCalendar date={relativeDate} courses={courses} onEditCb={fetchCourses} direction={direction} />
+      <WeekCalendar date={relativeDate} courses={courses} onEditCb={fetchCourses} />
     </AdminDashboardLayout>
   );
 };

@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils';
 
 interface IProps {
-  className?: string;
   children?: React.ReactNode;
+  className?: string;
 }
 
 export function TypographyH1({ children, className }: IProps) {
@@ -33,7 +33,7 @@ export function TypographyH4({ children, className }: IProps) {
 }
 
 export function TypographyP({ children, className }: IProps) {
-  return <p className={cn('leading-7 [&:not(:first-child)]:mt-6', className)}>{children}</p>;
+  return <p className={cn('text-muted-foreground leading-6 [&:not(:first-child)]:mt-6', className)}>{children}</p>;
 }
 
 export function TypographyBlockquote({ children, className }: IProps) {

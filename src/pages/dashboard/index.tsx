@@ -30,7 +30,7 @@ const DashboardHomePage = ({ user }: IProps) => {
   const [group, setGroup] = useState<string | undefined>(user.groups[0]);
   const [courses, setCourses] = useState<Database.ICourse[]>([]);
 
-  const [[direction, relativeDate], setRelativeDateAndDirection] = useState<[1 | -1, Date]>([1, new Date()]);
+  const [relativeDate, setRelativeDate] = useState<Date>(new Date());
 
   /**
    * Fetch the courses of the selected group (not disabled)
@@ -46,7 +46,7 @@ const DashboardHomePage = ({ user }: IProps) => {
       .sort((a, b) => (isBefore(new Date(a.start_datetime), new Date(b.start_datetime)) ? -1 : 1));
 
     if (!candidate) return;
-    setRelativeDateAndDirection(() => [1, new Date(candidate.start_datetime)]);
+    setRelativeDate(new Date(candidate.start_datetime));
     setHighlightedCourses([candidate]);
   };
 
@@ -56,16 +56,16 @@ const DashboardHomePage = ({ user }: IProps) => {
   useEffect(() => {
     if (!group) return;
 
-    fetchCourses();
+    fetchCourses().then();
   }, [group]);
 
   return (
-    <DashboardLayout className="h-full flex flex-col gap-6 items-start justify-start">
+    <DashboardLayout className="h-full flex flex-col items-start justify-start">
       <Head>
         <title>Dashboard</title>
       </Head>
 
-      <div className="w-full flex flex-col md:flex-row justify-between gap-4">
+      <div className="w-full flex flex-col md:flex-row justify-between px-5 py-3.5 gap-4 border-b border-input">
         <Select value={group} onValueChange={(_group) => setGroup(_group)}>
           <SelectTrigger className="w-full md:w-auto">
             <SelectValue placeholder="Selectionner un groupe" />
@@ -92,7 +92,7 @@ const DashboardHomePage = ({ user }: IProps) => {
           selectPlaceholder="Aller au prochain cours"
         />
 
-        <DatePicker relativeDate={relativeDate} setRelativeDateAndDirection={setRelativeDateAndDirection} />
+        <DatePicker relativeDate={relativeDate} setRelativeDate={setRelativeDate} />
       </div>
 
       <WeekCalendar
@@ -100,7 +100,6 @@ const DashboardHomePage = ({ user }: IProps) => {
         highlightedCourses={highlightedCourses}
         onEditCb={fetchCourses}
         date={relativeDate}
-        direction={direction}
       />
     </DashboardLayout>
   );

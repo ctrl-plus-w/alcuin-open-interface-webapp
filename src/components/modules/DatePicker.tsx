@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 
-import { addDays, format, isAfter, subDays } from 'date-fns';
+import { addDays, format, subDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 
@@ -12,25 +12,25 @@ import useTailwindBreakpoint from '@/hook/useTailwindBreakpoints';
 
 interface IProps {
   relativeDate: Date;
-  setRelativeDateAndDirection: Dispatch<SetStateAction<[1 | -1, Date]>>;
+  setRelativeDate: Dispatch<SetStateAction<Date>>;
 }
 
-const DatePicker = ({ relativeDate, setRelativeDateAndDirection }: IProps) => {
+const DatePicker = ({ relativeDate, setRelativeDate }: IProps) => {
   const breakpoint = useTailwindBreakpoint();
 
   const onCalendarNext = () => {
     if (['sm', 'md', 'lg', 'xl'].includes(breakpoint)) {
-      setRelativeDateAndDirection(([_, d]) => [1, addDays(d, 1)]);
+      setRelativeDate((d) => addDays(d, 1));
     } else {
-      setRelativeDateAndDirection(([_, d]) => [1, addDays(d, 7)]);
+      setRelativeDate((d) => addDays(d, 7));
     }
   };
 
   const onCalendarPrevious = () => {
     if (['sm', 'md', 'lg', 'xl'].includes(breakpoint)) {
-      setRelativeDateAndDirection(([_, d]) => [-1, subDays(d, 1)]);
+      setRelativeDate((d) => subDays(d, 1));
     } else {
-      setRelativeDateAndDirection(([_, d]) => [-1, subDays(d, 7)]);
+      setRelativeDate((d) => subDays(d, 7));
     }
   };
 
@@ -48,12 +48,7 @@ const DatePicker = ({ relativeDate, setRelativeDateAndDirection }: IProps) => {
           </Button>
         </PopoverTrigger>
         <PopoverContent className="p-0">
-          <Calendar
-            mode="single"
-            selected={relativeDate}
-            onSelect={(_d) => _d && setRelativeDateAndDirection(([_, d]) => [isAfter(_d, d) ? 1 : -1, _d])}
-            locale={fr}
-          />
+          <Calendar mode="single" selected={relativeDate} onSelect={(_d) => _d && setRelativeDate(_d)} locale={fr} />
         </PopoverContent>
       </Popover>
 

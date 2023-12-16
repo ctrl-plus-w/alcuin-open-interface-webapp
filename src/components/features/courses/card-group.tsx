@@ -47,11 +47,11 @@ const CardGroup = ({ courses, onEditCb, highlightedCourses = [], className }: IP
   };
 
   return (
-    <div className="flex flex-row w-full gap-2">
+    <div className="flex flex-row w-full gap-2 px-3">
       <div
         className={cn(
           'relative flex flex-col w-full gap-2 rounded-md',
-          (isScrolling || isTouching) && 'bg-purple-100',
+          // (isScrolling || isTouching) && 'bg-purple-100',
           'transition-all duration-200',
           className,
         )}
@@ -97,9 +97,9 @@ const CardGroup = ({ courses, onEditCb, highlightedCourses = [], className }: IP
             <div
               key={i}
               className={cn(
-                'w-1.5 h-1.5 rounded-full bg-purple-200',
-                i === visibleCourseIndex && 'bg-purple-400',
-                courses[i].description !== '' && 'outline outline-1 outline-offset-1 outline-purple-800',
+                'w-1.5 h-1.5 rounded-full bg-muted-foreground',
+                i === visibleCourseIndex && 'bg-foreground',
+                courses[i].description !== '' && 'outline outline-1 outline-offset-1 outline-foreground',
               )}
             ></div>
           ))}
