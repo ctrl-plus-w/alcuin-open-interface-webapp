@@ -56,8 +56,7 @@ const CreateUserSheet = ({ loggedInUser }: IProps) => {
   const isValid = useMemo(() => {
     const { error } = formSchema.validate({ email, password });
 
-    if (error) return false;
-    return true;
+    return !error;
   }, [email, password]);
 
   const createUser = async () => {
@@ -70,7 +69,7 @@ const CreateUserSheet = ({ loggedInUser }: IProps) => {
         { headers: { Authorization: `Bearer ${session.access_token}` } },
       );
 
-      fetchUsers(loggedInUser);
+      await fetchUsers(loggedInUser);
 
       toast({
         title: 'Succès !',

@@ -13,8 +13,8 @@ import { prettifyCalendarName } from '@/util/string.util';
 const IdCell = ({ row }: CellContext<Database.IProfile, any>) => {
   const breakpoint = useTailwindBreakpoint();
 
-  const handleClick = () => {
-    navigator.clipboard.writeText(row.original.id);
+  const handleClick = async () => {
+    await navigator.clipboard.writeText(row.original.id);
   };
 
   const id = useMemo(() => {

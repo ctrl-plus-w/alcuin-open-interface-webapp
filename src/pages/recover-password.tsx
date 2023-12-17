@@ -68,7 +68,7 @@ const RecoverPage = () => {
         description: 'Votre mot de passe a été réinitialisé avec succès.',
       });
 
-      router.push('/dashboard');
+      await router.push('/dashboard');
     } catch (err) {
       toastError(err);
     } finally {

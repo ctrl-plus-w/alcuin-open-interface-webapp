@@ -75,11 +75,11 @@ const AuthContextProvider = ({ children }: IProps) => {
   useEffect(() => {
     if (!session) return;
 
-    fetchUser();
+    fetchUser().then();
   }, [session]);
 
   useEffect(() => {
-    fetchSession();
+    fetchSession().then();
   }, []);
 
   useEffect(() => {

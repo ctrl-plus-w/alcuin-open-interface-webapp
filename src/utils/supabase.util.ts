@@ -12,7 +12,6 @@ export const shallowCompareSessions = (session1: Session | null, session2: Sessi
   if (session2.access_token !== session1.access_token) return false;
   if (session2.refresh_token !== session1.refresh_token) return false;
   if (session2.token_type !== session1.token_type) return false;
-  if (session2.user.id !== session1.user.id) return false;
 
-  return true;
+  return session2.user.id === session1.user.id;
 };

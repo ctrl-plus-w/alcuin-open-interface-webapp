@@ -39,7 +39,7 @@ export default function ProfessorsHome({ professors }: InferGetServerSidePropsTy
     [professors],
   );
 
-  const onClick = () => {
+  const onClick = async () => {
     const professor = professorsValues.find(({ value }) => value === currentProfessor);
     if (!professor) return;
 
@@ -47,7 +47,7 @@ export default function ProfessorsHome({ professors }: InferGetServerSidePropsTy
     url.searchParams.set('name', professor.label);
 
     try {
-      navigator.clipboard.writeText(url.href);
+      await navigator.clipboard.writeText(url.href);
 
       toast({
         title: 'Copié !',

@@ -19,14 +19,14 @@ const withAuth = <IProps extends IPageProps>(Component: React.ComponentType<IPro
     useEffect(() => {
       if (isLoading) return;
 
-      if (!session) router.push('/');
+      if (!session) router.push('/').then();
     }, [session, isLoading]);
 
     useEffect(() => {
       if (!user) return;
 
-      if (router.asPath.startsWith('/dashboard') && user.role === 'ADMIN') router.replace('/admin-dashboard');
-      if (router.asPath.startsWith('/admin-dashboard') && user.role !== 'ADMIN') router.replace('/dashboard');
+      if (router.asPath.startsWith('/dashboard') && user.role === 'ADMIN') router.replace('/admin-dashboard').then();
+      if (router.asPath.startsWith('/admin-dashboard') && user.role !== 'ADMIN') router.replace('/dashboard').then();
     }, [user]);
 
     if (isLoading || !session || !user) return <SplashLayout />;

@@ -43,7 +43,7 @@ const AdminDashboardQueuePage = () => {
   };
 
   useEffect(() => {
-    fetchQueue();
+    fetchQueue().then();
   }, []);
 
   return (

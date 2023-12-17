@@ -31,7 +31,7 @@ export const getUserIdFromRequest = async (req: NextApiRequest): Promise<string>
 
     const jwtSecret = process.env.JWT_SECRET;
     if (!jwtSecret) {
-      console.error("Missing environement variable 'JWT_SECRET'.");
+      console.error("Missing environment variable 'JWT_SECRET'.");
       throw new UnauthorizedError();
     }
 

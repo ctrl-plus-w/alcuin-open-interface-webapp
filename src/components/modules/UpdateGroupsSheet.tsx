@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { Button } from '@/ui/button';
 import { Checkbox } from '@/ui/checkbox';
@@ -40,7 +40,7 @@ const UpdateGroupsSheet = ({ opened, setOpened, user, loggedInUser }: IProps) =>
     try {
       await profilesRepository.update(user.id, { groups });
 
-      fetchUsers(loggedInUser);
+      await fetchUsers(loggedInUser);
 
       toast({
         title: 'Succès !',

@@ -7,7 +7,7 @@ import { checkIsHTTPMethod } from '@/util/api.util';
 import HTTPMethod from '@/constant/HTTPMethod';
 
 /**
- * NextJS API Error Handler wrapper
+ * Next.js API Error Handler wrapper
  * @param handler The NextApiHandler route handle
  * @param method The allow method to access the route
  */

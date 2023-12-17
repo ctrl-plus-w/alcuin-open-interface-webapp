@@ -44,7 +44,7 @@ export const getSimpleTime = (date: Date): string => {
 };
 
 /**
- * Get the next monday if the date is a day in the week end, otherwise return the same date
+ * Get the next monday if the date is a day in the weekend, otherwise return the same date
  * @param inputDate The date input
  * @returns A date
  */

@@ -1,5 +1,5 @@
 /**
- * Stringify an array by putting "," and a "and" between each element.
+ * Stringify an array by putting "," and an "and" between each element.
  * @param arr The array to stringify
  * @returns A stringified version of the array
  */

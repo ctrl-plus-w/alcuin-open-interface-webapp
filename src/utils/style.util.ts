@@ -3,7 +3,7 @@ import { ClassValue } from 'clsx';
 import { twMerge } from 'tw-merge';
 
 /**
- * Conditionnaly render and merge the class names of a react component.
+ * Conditionally render and merge the class names of a React component.
  * This is a combination of `clsx` and `twMerge`.
  * @param classList The class names
  * @returns A class list

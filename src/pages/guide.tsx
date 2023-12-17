@@ -18,8 +18,6 @@ const GuidePage = () => {
 
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-4">Guide d&apos;installation</h1>
 
-      {/* <p>Bienvenue sur le guide d&apos;installation, il est nécessaire pour tous les tutoriels d&apos;avoir au préalable copié le liens correspondant à sa formation.</p> */}
-
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1">
           <AccordionTrigger>Calendrier Apple</AccordionTrigger>
@@ -59,7 +57,7 @@ const GuidePage = () => {
           <AccordionContent>
             <p>
               Afin d&apos;utiliser le calendrier alcuin sur le calendrier Samsung, il suffit de suivre le tutoriel n°2
-              (Calendrier Google) et d&apos;utiliser la même addresse sur son compte Samsung et sur son compte Google.
+              (Calendrier Google) et d&apos;utiliser la même adresse sur son compte Samsung et sur son compte Google.
             </p>
           </AccordionContent>
         </AccordionItem>

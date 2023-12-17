@@ -1,3 +1,5 @@
+import React from 'react';
+
 import Link from 'next/link';
 
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
@@ -21,8 +23,8 @@ interface IProps {
 const AdminDashboardLayout = ({ className, children }: IProps) => {
   const supabase = useSupabaseClient();
 
-  const signOut = () => {
-    supabase.auth.signOut();
+  const signOut = async () => {
+    await supabase.auth.signOut();
   };
 
   return (

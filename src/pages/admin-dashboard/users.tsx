@@ -21,7 +21,7 @@ const AdminDashboardUsersPage = ({ user }: IProps) => {
   const { users, fetchUsers } = useUsers();
 
   useEffect(() => {
-    fetchUsers(user);
+    fetchUsers(user).then();
   }, []);
 
   return (
