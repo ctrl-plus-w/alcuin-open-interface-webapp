@@ -77,7 +77,7 @@ declare global {
       created_at: string;
     }
 
-    export type ICreateQueue = Omit<IQueue, 'id' | 'created_at'>;
+    export type ICreateQueue = Omit<IQueue, 'id' | 'created_at' | 'message'> & Partial<Pick<IQueue, 'message'>>;
     export type IUpdateQueue = Partial<ICreateQueue>;
   }
 }
