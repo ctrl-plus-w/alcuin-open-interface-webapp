@@ -50,3 +50,8 @@ export const removeById = <T extends { id: string }>(el: T) => {
     return arr.filter((_el) => _el.id !== el.id);
   };
 };
+
+export const equalFlat = <T>(arr1: T[], arr2: T[]): boolean => {
+  if (arr1.length !== arr2.length) return false;
+  return arr1.every((el) => arr2.includes(el));
+};
