@@ -24,6 +24,8 @@ import { onChange } from '@/util/react.util';
 
 import { cn } from '@/lib/utils';
 
+import config from '@/constant/Config';
+
 interface IProps {
   course: Database.ICourse;
 
@@ -66,7 +68,9 @@ const Card = ({ course, onEditCb, highlighted, className }: IProps) => {
         </p>
 
         <p className="text-foreground text-xs mt-3">
-          {[course.start_datetime, course.end_datetime].map((d) => getSimpleTime(addHours(new Date(d), 1))).join(' - ')}
+          {[course.start_datetime, course.end_datetime]
+            .map((d) => getSimpleTime(addHours(new Date(d), config.ADD_HOURS_OFFSET)))
+            .join(' - ')}
         </p>
       </div>
     ),

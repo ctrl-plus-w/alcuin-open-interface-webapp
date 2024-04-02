@@ -13,6 +13,8 @@ import { RessourceNotFoundError } from '@/class/ApiError';
 
 import supabase from '@/instance/supabaseAdmin';
 
+import config from '@/constant/Config';
+
 const coursesRepository = new CoursesRepository(supabase);
 
 const handler: NextApiHandler = async (req, res) => {
@@ -47,8 +49,8 @@ const handler: NextApiHandler = async (req, res) => {
     const title = course.description !== '' ? `⚠ ${course.title}` : course.title;
 
     cal.createEvent({
-      start: addHours(new Date(course.start_datetime), 1),
-      end: addHours(new Date(course.end_datetime), 1),
+      start: addHours(new Date(course.start_datetime), config.ADD_HOURS_OFFSET),
+      end: addHours(new Date(course.end_datetime), config.ADD_HOURS_OFFSET),
       summary: `ESAIP | ${title} | ${course.groups.map(prettifyCalendarName).join(' - ')}`,
       description: course.description,
       location: course.location,
