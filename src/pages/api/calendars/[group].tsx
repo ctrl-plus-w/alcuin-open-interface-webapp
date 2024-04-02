@@ -1,6 +1,5 @@
 import { NextApiHandler } from 'next';
 
-import { addHours } from 'date-fns';
 import { ICalCalendar } from 'ical-generator';
 
 import { CoursesRepository } from '@/repository/CoursesRepository';
