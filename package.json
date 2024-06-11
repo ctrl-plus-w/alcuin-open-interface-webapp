@@ -26,6 +26,7 @@
     "@radix-ui/react-toast": "^1.1.5",
     "@supabase/auth-helpers-nextjs": "^0.8.1",
     "@supabase/auth-helpers-react": "^0.4.2",
+    "@supabase/postgrest-js": "1.15.2",
     "@supabase/supabase-js": "^2.38.1",
     "@tanstack/react-table": "^8.10.7",
     "@touch4it/ical-timezones": "^1.9.0",
