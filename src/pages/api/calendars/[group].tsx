@@ -30,9 +30,20 @@ const handler: NextApiHandler = async (req, res) => {
   for (const course of courses) {
     const title = course.description !== '' ? `⚠ ${course.title}` : course.title;
 
+    var organizer:string
+    var attendees:any[] = []
+    if (Array.isArray(course.professors)) {
+      organizer = course.professors[0]
+      attendees = course.professors.slice(1, course.professors.length - 1)
+    }
+    else organizer = course.professors
+
     cal.createEvent({
+      timezone: "Europe/Paris",
       start: addHours(new Date(course.start_datetime), config.ADD_HOURS_OFFSET),
       end: addHours(new Date(course.end_datetime), config.ADD_HOURS_OFFSET),
+      organizer,
+      attendees,
       summary: title,
       description: course.description,
       location: course.location,
