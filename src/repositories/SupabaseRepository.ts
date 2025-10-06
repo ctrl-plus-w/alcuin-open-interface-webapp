@@ -1,9 +1,10 @@
-import { PostgrestFilterBuilder } from '@supabase/postgrest-js';
 import { SupabaseClient } from '@supabase/supabase-js';
 
-import { Repository, Conditions, getBaseAndNotConditions } from '@/repository/Repository';
+import { Conditions, getBaseAndNotConditions, Repository } from '@/repository/Repository';
 
 import { isStringRecord } from '@/util/object.util';
+
+export type BaseRequestType = ReturnType<ReturnType<SupabaseClient['from']>['select']>;
 
 export abstract class SupabaseRepository<T extends { id: string }, TCreate, TUpdate>
   implements Repository<T, TCreate, TUpdate, string>
@@ -16,9 +17,9 @@ export abstract class SupabaseRepository<T extends { id: string }, TCreate, TUpd
   }
 
   protected withConditions<ConditionType extends T>(
-    baseRequest: PostgrestFilterBuilder<any, any, any, unknown>,
+    baseRequest: BaseRequestType,
     conditions: Conditions<ConditionType>,
-  ): PostgrestFilterBuilder<any, any, any, unknown> {
+  ): BaseRequestType {
     const { base: baseConditions, not: notConditions } = getBaseAndNotConditions(conditions);
 
     for (const conditionKey in baseConditions) {
@@ -39,8 +40,8 @@ export abstract class SupabaseRepository<T extends { id: string }, TCreate, TUpd
         } else {
           baseRequest = baseRequest.contains(conditionKey, conditionValueOrValues);
         }
-      } else {
-        baseRequest = baseRequest.eq(conditionKey, conditionValueOrValues);
+      } else if (conditionValueOrValues) {
+        baseRequest = baseRequest.eq(conditionKey, conditionValueOrValues as any);
       }
     }
 
@@ -53,8 +54,8 @@ export abstract class SupabaseRepository<T extends { id: string }, TCreate, TUpd
           'in',
           conditionValueOrValues.map((el) => el.toString()),
         );
-      } else {
-        baseRequest = baseRequest.neq(conditionKey, conditionValueOrValues);
+      } else if (conditionValueOrValues) {
+        baseRequest = baseRequest.neq(conditionKey, conditionValueOrValues as any);
       }
     }
 
@@ -68,7 +69,7 @@ export abstract class SupabaseRepository<T extends { id: string }, TCreate, TUpd
     page?: number,
     resultsPerPage?: number,
   ): Promise<ReturnType> {
-    let baseRequest = this.client.from(this.relation).select(select);
+    let baseRequest: BaseRequestType = this.client.from(this.relation).select(select);
 
     // Add the range condition
     if (page !== undefined && resultsPerPage !== undefined) {

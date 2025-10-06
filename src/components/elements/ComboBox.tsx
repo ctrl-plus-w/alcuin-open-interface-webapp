@@ -28,7 +28,7 @@ export default function Combobox({ placeholder, currentValue, setCurrentValue, v
         <Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between">
           {currentValue
             ? values.find(({ value }) => value === currentValue)?.label
-            : placeholder ?? 'Select a value...'}
+            : (placeholder ?? 'Select a value...')}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
