@@ -47,8 +47,8 @@ const handler: NextApiHandler = async (req, res) => {
     const title = course.description !== '' ? `⚠ ${course.title}` : course.title;
 
     cal.createEvent({
-      start: new Date(course.start_datetime),
-      end: new Date(course.end_datetime),
+      start: course.start_datetime,
+      end: course.end_datetime,
       summary: `ESAIP | ${title} | ${course.groups.map(prettifyCalendarName).join(' - ')}`,
       description: course.description,
       location: course.location,
