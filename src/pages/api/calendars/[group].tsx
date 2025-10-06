@@ -1,5 +1,6 @@
 import { NextApiHandler } from 'next';
 
+import { toZonedTime } from 'date-fns-tz';
 import { ICalCalendar } from 'ical-generator';
 
 import { CoursesRepository } from '@/repository/CoursesRepository';
@@ -30,8 +31,8 @@ const handler: NextApiHandler = async (req, res) => {
     const title = course.description !== '' ? `⚠ ${course.title}` : course.title;
 
     cal.createEvent({
-      start: course.start_datetime,
-      end: course.end_datetime,
+      start: toZonedTime(course.start_datetime, 'Europe/Paris'),
+      end: toZonedTime(course.end_datetime, 'Europe/Paris'),
       summary: title,
       description: course.description,
       location: course.location,
