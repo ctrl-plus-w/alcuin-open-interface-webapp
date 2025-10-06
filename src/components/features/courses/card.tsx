@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { addHours } from 'date-fns';
-
 import { Button } from '@/ui/button';
 import { Label } from '@/ui/label';
 import {
@@ -23,8 +21,6 @@ import { getSimpleTime } from '@/util/date.util';
 import { onChange } from '@/util/react.util';
 
 import { cn } from '@/lib/utils';
-
-import config from '@/constant/Config';
 
 interface IProps {
   course: Database.ICourse;
@@ -68,9 +64,7 @@ const Card = ({ course, onEditCb, highlighted, className }: IProps) => {
         </p>
 
         <p className="text-foreground text-xs mt-3">
-          {[course.start_datetime, course.end_datetime]
-            .map((d) => getSimpleTime(addHours(new Date(d), config.ADD_HOURS_OFFSET)))
-            .join(' - ')}
+          {[course.start_datetime, course.end_datetime].map((d) => getSimpleTime(new Date(d))).join(' - ')}
         </p>
       </div>
     ),
