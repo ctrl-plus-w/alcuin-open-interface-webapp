@@ -11,6 +11,7 @@ const GROUPS = [
   'GRE4_S07_2025_2026',
   'GREA3_S05_2025_2026',
   'GREA4_S07_2025_2026',
+  'M1_2025_2026',
 ];
 
 export default GROUPS;
