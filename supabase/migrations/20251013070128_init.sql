@@ -1,4 +1,6 @@
 create extension if not exists "pg_cron" with schema "extensions";
+create extension if not exists "pgcrypto";
+create extension if not exists "pgsodium";
 
 drop extension if exists "pg_net";
 
