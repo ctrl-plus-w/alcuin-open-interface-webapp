@@ -34,7 +34,7 @@ const handler: NextApiHandler = async (req, res) => {
       start: toZonedTime(course.start_datetime, 'Europe/Paris'),
       end: toZonedTime(course.end_datetime, 'Europe/Paris'),
       summary: title,
-      description: `${course.description ? `${course.description}\n` : ''}${course.professors.length ? `Prof${course.professors.length > 1 ? 's' : ''}: ${course.professors.join(", ")}` : "Aucun prof assigné"}  `,
+      description: `${course.description ? `${course.description}\n` : ''}${course.professors.length ? `Prof${course.professors.length > 1 ? 's' : ''}: ${course.professors.join(', ')}` : 'Aucun prof assigné'}  `,
       location: course.location,
     });
   }
