@@ -2,6 +2,7 @@ import { NextApiHandler } from 'next';
 
 import { isDefined } from '@/utils/array.util';
 import { prettifyCalendarName } from '@/utils/string.util';
+import { addHours } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import { ICalCalendar } from 'ical-generator';
 
@@ -48,8 +49,8 @@ const handler: NextApiHandler = async (req, res) => {
     const title = course.description !== '' ? `⚠ ${course.title}` : course.title;
 
     cal.createEvent({
-      start: toZonedTime(course.start_datetime, 'Europe/Paris'),
-      end: toZonedTime(course.end_datetime, 'Europe/Paris'),
+      start: addHours(toZonedTime(course.start_datetime, 'Europe/Paris'), 1),
+      end: addHours(toZonedTime(course.end_datetime, 'Europe/Paris'), 1),
       summary: `ESAIP | ${title} | ${course.groups.map(prettifyCalendarName).join(' - ')}`,
       description: course.description,
       location: course.location,
